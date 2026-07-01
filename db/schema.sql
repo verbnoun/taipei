@@ -25,7 +25,9 @@ CREATE TABLE IF NOT EXISTS spots (
   url           TEXT,
   -- Apple Maps compatible address (NULL = venue varies / unverified)
   address_apple TEXT,
-  address_verified INTEGER DEFAULT 0
+  address_verified INTEGER DEFAULT 0,
+  -- review gate: 0 = staged (invisible to app), 1 = live
+  published     INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS spot_details (
@@ -52,7 +54,23 @@ CREATE TABLE IF NOT EXISTS events (
   description     TEXT,
   status          TEXT DEFAULT 'unknown',  -- confirmed / tentative / unknown
   url             TEXT,
-  spot_id         TEXT REFERENCES spots(id)
+  spot_id         TEXT REFERENCES spots(id),
+  -- review gate: 0 = staged (invisible to app + calendar), 1 = live
+  published       INTEGER DEFAULT 1
+);
+
+-- Leads: people / communities / makers / scenes worth meeting or exploring.
+-- Deliberately loose — discovery that doesn't fit an event or a place.
+CREATE TABLE IF NOT EXISTS leads (
+  id         TEXT PRIMARY KEY,
+  name       TEXT NOT NULL,
+  kind       TEXT,          -- person / community / maker / shop / scene / other
+  handle_url TEXT,          -- IG / site / wherever to find them
+  note       TEXT,          -- why relevant + how to connect
+  category   TEXT,          -- freeform label, nullable ("who cares")
+  certainty  TEXT DEFAULT 'lead',
+  source_url TEXT,
+  published  INTEGER DEFAULT 0
 );
 
 -- Sources: a crawlable URL that can provide event or spot info

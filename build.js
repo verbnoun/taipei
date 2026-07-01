@@ -15,7 +15,7 @@ const nei = db.prepare(`
 
 const spotsRaw = db.prepare(`
   SELECT id, name, zh, category AS cat, neighborhood AS nb, lat, lng, no_map AS noMap,
-         about, status, url FROM spots ORDER BY rowid
+         about, status, url FROM spots WHERE published = 1 ORDER BY rowid
 `).all();
 
 const detailsRaw = db.prepare(`SELECT spot_id, key, value FROM spot_details ORDER BY id`).all();
@@ -35,7 +35,7 @@ const eventsRaw = db.prepare(`
          date, start_time AS start, end_time AS end,
          all_day AS allDay, rrule, cadence_label AS cadenceLabel,
          category AS cat, description AS desc, status, url
-  FROM events ORDER BY date, start_time
+  FROM events WHERE published = 1 ORDER BY date, start_time
 `).all();
 
 const events = eventsRaw.map(e => {
