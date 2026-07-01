@@ -70,7 +70,8 @@ CREATE TABLE IF NOT EXISTS leads (
   category   TEXT,          -- freeform label, nullable ("who cares")
   certainty  TEXT DEFAULT 'lead',
   source_url TEXT,
-  published  INTEGER DEFAULT 0
+  published  INTEGER DEFAULT 0,
+  met        INTEGER DEFAULT 0   -- checked off once Jackson has met/connected
 );
 
 -- Sources: a crawlable URL that can provide event or spot info
