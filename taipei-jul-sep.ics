@@ -16,7 +16,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:livehouse-wk@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Check live houses for weekend gigs (PIPE · Waiting Room · Witch House)
 LOCATION:Taipei
 DESCRIPTION:These post bookings ~2–4 weeks out — scan for experimental / electronic nights. (The Wall's lineup is already listed above.)
@@ -26,7 +26,7 @@ RRULE:FREQ=WEEKLY;BYDAY=WE;UNTIL=20260915
 END:VEVENT
 BEGIN:VEVENT
 UID:revolver-brass-bomb-20260701@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Brass Bomb Party Vol.3 @ Revolver
 LOCATION:No. 1-2\, Section 1\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:盜魂 Soul Heist + KiKu (CH). Doors 19:30\, show 20:00. NT$500 (+1 drink). Hip-hop / brass band / avant-garde jazz / rock.
@@ -34,8 +34,17 @@ DTSTART;TZID=Asia/Taipei:20260701T200000
 DTEND;TZID=Asia/Taipei:20260701T230000
 END:VEVENT
 BEGIN:VEVENT
+UID:sappho-tripolar-20260702@taipei-field-notes
+DTSTAMP:20260701T082839Z
+SUMMARY:Tri-polar Syndrome 爵症 (improv) @ Sappho
+LOCATION:No. 1\, Lane 102\, Section 1\, Anhe Road\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:林華勁 / 劉育嘉 / Teemu Mustonen. Improv-leaning jazz trio led by guitarist Lin Hua-chin.
+DTSTART;TZID=Asia/Taipei:20260702T210000
+DTEND;TZID=Asia/Taipei:20260702T230000
+END:VEVENT
+BEGIN:VEVENT
 UID:mox-2026-07-03@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:MOX Friday — founder + investor happy hour
 LOCATION:Taipei (venue varies — check listing)
 DESCRIPTION:SOSV/MOX ecosystem happy hour. Confirm venue before heading out.
@@ -44,7 +53,7 @@ DTEND;TZID=Asia/Taipei:20260703T210000
 END:VEVENT
 BEGIN:VEVENT
 UID:pawnshop-wk@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Pawnshop open — check RA/IG for lineup
 LOCATION:No. 279\, Section 4\, Xinyi Road\, Da'an District\, Taipei\, Taiwan
 DESCRIPTION:Techno / leftfield electronic. Lineups posted ~1–2 weeks ahead on Resident Advisor & Instagram.
@@ -54,7 +63,7 @@ RRULE:FREQ=WEEKLY;BYDAY=FR,SA;UNTIL=20260915T235900Z
 END:VEVENT
 BEGIN:VEVENT
 UID:tkg-cycles-close@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:TKG+ — last day: Mit Jai Inn "CYCLES"
 LOCATION:No. 15\, Lane 548\, Ruiguang Road\, Neihu District\, Taipei\, Taiwan
 DESCRIPTION:Confirmed: 23 May–4 Jul 2026\, reception 23 May (Sat) 4:30pm.
@@ -63,7 +72,7 @@ DTEND;VALUE=DATE:20260705
 END:VEVENT
 BEGIN:VEVENT
 UID:tkg-oyama-close@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:TKG+ Projects — last day: Enrico Isamu Oyama "Aerosolic Forms"
 LOCATION:No. 15\, Lane 548\, Ruiguang Road\, Neihu District\, Taipei\, Taiwan
 DESCRIPTION:Confirmed: 14 Mar–4 Jul 2026.
@@ -72,7 +81,7 @@ DTEND;VALUE=DATE:20260705
 END:VEVENT
 BEGIN:VEVENT
 UID:gallery-neihu-sat@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Neihu gallery day — TKG+ / Tina Keng cluster
 LOCATION:No. 15\, Lane 548\, Ruiguang Road\, Neihu District\, Taipei\, Taiwan
 DESCRIPTION:TKG+\, TKG+ Projects and Tina Keng share No.15\, Ln 548 Ruiguang Rd. Tue–Sat 11–6. Autumn shows reopen late Aug — receptions on Saturdays 4:30pm. Check tkgplus.com.
@@ -81,7 +90,7 @@ DTEND;VALUE=DATE:20260705
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-0@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: NO STAGE NO WALLS
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Indie / punk / disco bill. Tickets: thewalllivehouse.kktix.cc
@@ -90,7 +99,7 @@ DTEND;TZID=Asia/Taipei:20260704T203000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-1@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: 肉聲菩薩 (noise / experimental)
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Wall-of-sound noise night — the loud\, leftfield end. Tickets: thewalllivehouse.kktix.cc
@@ -99,7 +108,7 @@ DTEND;TZID=Asia/Taipei:20260705T210000
 END:VEVENT
 BEGIN:VEVENT
 UID:tinakeng-su-close@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Tina Keng — last day: Su Meng-Hung "The Flowers of Coromandel"
 LOCATION:No. 15\, Lane 548\, Ruiguang Road\, Neihu District\, Taipei\, Taiwan
 DESCRIPTION:Confirmed: opened 8 May 2026\, closes 10–11 Jul.
@@ -108,7 +117,7 @@ DTEND;VALUE=DATE:20260711
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-2@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: Malpaca 羊駝小姐 — "Now… What?"
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:First headline show. Tickets: thewalllivehouse.kktix.cc
@@ -117,7 +126,7 @@ DTEND;TZID=Asia/Taipei:20260711T213000
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-0@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Startup Grind Taipei — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
@@ -126,7 +135,7 @@ DTEND;VALUE=DATE:20260716
 END:VEVENT
 BEGIN:VEVENT
 UID:whitestone-shiozawa-close@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Whitestone — last day: Karen Shiozawa "Emerald Ocean"
 LOCATION:No. 15\, Lane 548\, Ruiguang Road\, Neihu District\, Taipei\, Taiwan
 DESCRIPTION:Confirmed: 13 Jun–18 Jul 2026.
@@ -135,7 +144,7 @@ DTEND;VALUE=DATE:20260719
 END:VEVENT
 BEGIN:VEVENT
 UID:bluerider-close@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Bluerider ART — last day: current Dunhua show
 LOCATION:No. 77\, Section 2\, Dunhua South Road\, Da'an District\, Taipei\, Taiwan
 DESCRIPTION:Confirmed: run 23 May–19 Jul 2026.
@@ -144,7 +153,7 @@ DTEND;VALUE=DATE:20260720
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-3@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Taiwan Startup Ecosystem Community — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
@@ -152,8 +161,17 @@ DTSTART;VALUE=DATE:20260722
 DTEND;VALUE=DATE:20260723
 END:VEVENT
 BEGIN:VEVENT
+UID:witchhouse-skipskip-20260724@taipei-field-notes
+DTSTAMP:20260701T082839Z
+SUMMARY:skip skip ben ben @ Witch House
+LOCATION:No. 7\, Lane 56\, Section 3\, Xinsheng South Road\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:Long-running Taiwanese lo-fi / experimental artist. Official Witch House schedule.
+DTSTART;TZID=Asia/Taipei:20260724T193000
+DTEND;TZID=Asia/Taipei:20260724T220000
+END:VEVENT
+BEGIN:VEVENT
 UID:eachmodern-konst-close@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Each Modern — last day: Antone Könst "Subjects"
 LOCATION:Each Modern\, Da'an
 DESCRIPTION:Confirmed: 13 Jun–25 Jul 2026.
@@ -161,8 +179,17 @@ DTSTART;VALUE=DATE:20260725
 DTEND;VALUE=DATE:20260726
 END:VEVENT
 BEGIN:VEVENT
+UID:pipe-between-20260725@taipei-field-notes
+DTSTAMP:20260701T082839Z
+SUMMARY:雙聲道 BETWEEN @ PIPE
+LOCATION:No. 2\, Shui Yuan Road\, Zhongzheng District\, Taipei\, Taiwan
+DESCRIPTION:upright磊落 / 範例三 / 韓森 — experimental / electronic bill at the water-tank venue.
+DTSTART;TZID=Asia/Taipei:20260725T191000
+DTEND;TZID=Asia/Taipei:20260725T223000
+END:VEVENT
+BEGIN:VEVENT
 UID:wall-3@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: 黃澤森 — 陰森童話故事集
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Solo return after three years. Tickets: thewalllivehouse.kktix.cc
@@ -171,7 +198,7 @@ DTEND;TZID=Asia/Taipei:20260726T213000
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-5@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Taiwan Entrepreneurs Network — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
@@ -180,7 +207,7 @@ DTEND;VALUE=DATE:20260730
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-4@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: Friko (US) Live in Taipei
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Chicago alt / post-punk — buzzy international booking. Tickets: thewalllivehouse.kktix.cc
@@ -189,7 +216,7 @@ DTEND;TZID=Asia/Taipei:20260730T213000
 END:VEVENT
 BEGIN:VEVENT
 UID:mox-2026-08-07@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:MOX Friday — founder + investor happy hour
 LOCATION:Taipei (venue varies — check listing)
 DESCRIPTION:SOSV/MOX ecosystem happy hour. Confirm venue before heading out.
@@ -198,7 +225,7 @@ DTEND;TZID=Asia/Taipei:20260807T210000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-5@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: MILLI — JAA EHH! Asia Tour
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Thai rapper\, Coachella alum. Tickets: thewalllivehouse.kktix.cc
@@ -207,7 +234,7 @@ DTEND;TZID=Asia/Taipei:20260809T203000
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-6@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:TechTaipei drinks — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
@@ -216,7 +243,7 @@ DTEND;VALUE=DATE:20260814
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-6@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:The Wall: DENGARYU 田我流 (JP hip-hop)
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:stillichimiya-affiliated Japanese hip-hop. Tickets: thewalllivehouse.kktix.cc
@@ -225,7 +252,7 @@ DTEND;TZID=Asia/Taipei:20260815T213000
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-1@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Startup Grind Taipei — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
@@ -234,7 +261,7 @@ DTEND;VALUE=DATE:20260820
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-4@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Taiwan Startup Ecosystem Community — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
@@ -243,7 +270,7 @@ DTEND;VALUE=DATE:20260827
 END:VEVENT
 BEGIN:VEVENT
 UID:mox-2026-09-04@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:MOX Friday — founder + investor happy hour
 LOCATION:Taipei (venue varies — check listing)
 DESCRIPTION:SOSV/MOX ecosystem happy hour. Confirm venue before heading out.
@@ -252,7 +279,7 @@ DTEND;TZID=Asia/Taipei:20260904T210000
 END:VEVENT
 BEGIN:VEVENT
 UID:tent-2@taipei-field-notes
-DTSTAMP:20260701T041522Z
+DTSTAMP:20260701T082839Z
 SUMMARY:Startup Grind Taipei — TENTATIVE\, verify date
 LOCATION:Taipei (RSVP online)
 DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
