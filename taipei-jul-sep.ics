@@ -1,0 +1,253 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Taipei Field Notes//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Taipei — Jul–Sep
+X-WR-TIMEZONE:Asia/Taipei
+BEGIN:VTIMEZONE
+TZID:Asia/Taipei
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0800
+TZOFFSETTO:+0800
+TZNAME:CST
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:mox-2026-07-03@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:MOX Friday — founder + investor happy hour
+LOCATION:Taipei (venue varies — check listing)
+DESCRIPTION:SOSV/MOX ecosystem happy hour. Confirm venue: https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV
+DTSTART;TZID=Asia/Taipei:20260703T190000
+DTEND;TZID=Asia/Taipei:20260703T210000
+END:VEVENT
+BEGIN:VEVENT
+UID:mox-2026-08-07@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:MOX Friday — founder + investor happy hour
+LOCATION:Taipei (venue varies — check listing)
+DESCRIPTION:SOSV/MOX ecosystem happy hour. Confirm venue: https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV
+DTSTART;TZID=Asia/Taipei:20260807T190000
+DTEND;TZID=Asia/Taipei:20260807T210000
+END:VEVENT
+BEGIN:VEVENT
+UID:mox-2026-09-04@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:MOX Friday — founder + investor happy hour
+LOCATION:Taipei (venue varies — check listing)
+DESCRIPTION:SOSV/MOX ecosystem happy hour. Confirm venue: https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV
+DTSTART;TZID=Asia/Taipei:20260904T190000
+DTEND;TZID=Asia/Taipei:20260904T210000
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-0@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Startup Grind Taipei — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260715
+DTEND;VALUE=DATE:20260716
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-1@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Startup Grind Taipei — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260819
+DTEND;VALUE=DATE:20260820
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-2@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Startup Grind Taipei — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260909
+DTEND;VALUE=DATE:20260910
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-3@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Taiwan Startup Ecosystem Community — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260722
+DTEND;VALUE=DATE:20260723
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-4@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Taiwan Startup Ecosystem Community — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260826
+DTEND;VALUE=DATE:20260827
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-5@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Taiwan Entrepreneurs Network — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260729
+DTEND;VALUE=DATE:20260730
+END:VEVENT
+BEGIN:VEVENT
+UID:tent-6@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:TechTaipei drinks — TENTATIVE\, verify date
+LOCATION:Taipei (RSVP online)
+DESCRIPTION:Cadence-based placeholder — confirm the real date before relying on it.
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260814
+END:VEVENT
+BEGIN:VEVENT
+UID:pawnshop-wk@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Pawnshop open — check RA/IG for lineup
+LOCATION:B1\, 279 Sec.4 Xinyi Rd\, Da'an
+DESCRIPTION:Techno / leftfield electronic. Lineups posted ~1–2 weeks ahead on Resident Advisor & Instagram.
+DTSTART;TZID=Asia/Taipei:20260703T230000
+DTEND;TZID=Asia/Taipei:20260703T235900
+RRULE:FREQ=WEEKLY;BYDAY=FR,SA;UNTIL=20260915T235900Z
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-0@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: NO STAGE NO WALLS
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:Indie / punk / disco bill. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260704T190000
+DTEND;TZID=Asia/Taipei:20260704T203000
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-1@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: 肉聲菩薩 (noise / experimental)
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:Wall-of-sound noise night — the loud\, leftfield end. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260705T193000
+DTEND;TZID=Asia/Taipei:20260705T210000
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-2@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: Malpaca 羊駝小姐 — "Now… What?"
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:First headline show. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260711T200000
+DTEND;TZID=Asia/Taipei:20260711T213000
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-3@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: 黃澤森 — 陰森童話故事集
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:Solo return after three years. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260726T200000
+DTEND;TZID=Asia/Taipei:20260726T213000
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-4@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: Friko (US) Live in Taipei
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:Chicago alt / post-punk — buzzy international booking. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260730T200000
+DTEND;TZID=Asia/Taipei:20260730T213000
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-5@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: MILLI — JAA EHH! Asia Tour
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:Thai rapper\, Coachella alum. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260809T190000
+DTEND;TZID=Asia/Taipei:20260809T203000
+END:VEVENT
+BEGIN:VEVENT
+UID:wall-6@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:The Wall: DENGARYU 田我流 (JP hip-hop)
+LOCATION:The Wall\, B1 No.200 Sec.4 Roosevelt Rd\, Gongguan
+DESCRIPTION:stillichimiya-affiliated Japanese hip-hop. Tickets: thewalllivehouse.kktix.cc
+DTSTART;TZID=Asia/Taipei:20260815T200000
+DTEND;TZID=Asia/Taipei:20260815T213000
+END:VEVENT
+BEGIN:VEVENT
+UID:livehouse-wk@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Check live houses for weekend gigs (PIPE · Waiting Room · Witch House)
+LOCATION:Taipei
+DESCRIPTION:These post bookings ~2–4 weeks out — scan for experimental / electronic nights. (The Wall's lineup is already listed above.)
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20260702
+RRULE:FREQ=WEEKLY;BYDAY=WE;UNTIL=20260915
+END:VEVENT
+BEGIN:VEVENT
+UID:bluerider-close@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Bluerider ART — last day: current Dunhua show
+LOCATION:Bluerider ART\, No.77 Sec.2 Dunhua S Rd\, Da'an
+DESCRIPTION:Confirmed: run 23 May–19 Jul 2026 (Fri press preview + Sat 2:30–6pm reception). Also "Butterflies of Light" @ Breeze Center thru 15 Jul.
+DTSTART;VALUE=DATE:20260719
+DTEND;VALUE=DATE:20260720
+END:VEVENT
+BEGIN:VEVENT
+UID:tkg-cycles-close@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:TKG+ — last day: Mit Jai Inn "CYCLES"
+LOCATION:TKG+ B1\, Ln 548 Ruiguang Rd\, Neihu
+DESCRIPTION:Confirmed: 23 May–4 Jul 2026\, reception 23 May (Sat) 4:30pm.
+DTSTART;VALUE=DATE:20260704
+DTEND;VALUE=DATE:20260705
+END:VEVENT
+BEGIN:VEVENT
+UID:tkg-oyama-close@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:TKG+ Projects — last day: Enrico Isamu Oyama "Aerosolic Forms"
+LOCATION:TKG+ Projects 2F\, Ln 548 Ruiguang Rd\, Neihu
+DESCRIPTION:Confirmed: 14 Mar–4 Jul 2026\, reception 14 Mar (Sat) 4:30pm. Aerosol/calligraphic painting\, w/ Takuro Someya Contemporary Art.
+DTSTART;VALUE=DATE:20260704
+DTEND;VALUE=DATE:20260705
+END:VEVENT
+BEGIN:VEVENT
+UID:tinakeng-su-close@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Tina Keng — last day: Su Meng-Hung "The Flowers of Coromandel"
+LOCATION:Tina Keng Gallery 1F\, Ln 548 Ruiguang Rd\, Neihu
+DESCRIPTION:Confirmed: opened 8 May 2026 (reception Sat 4:30pm)\, closes 10–11 Jul. Same Neihu building as TKG+.
+DTSTART;VALUE=DATE:20260710
+DTEND;VALUE=DATE:20260711
+END:VEVENT
+BEGIN:VEVENT
+UID:eachmodern-konst-close@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Each Modern — last day: Antone Könst "Subjects"
+LOCATION:Each Modern\, Da'an
+DESCRIPTION:Confirmed: 13 Jun–25 Jul 2026 (opened Sat 13 Jun).
+DTSTART;VALUE=DATE:20260725
+DTEND;VALUE=DATE:20260726
+END:VEVENT
+BEGIN:VEVENT
+UID:whitestone-shiozawa-close@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Whitestone — last day: Karen Shiozawa "Emerald Ocean"
+LOCATION:Whitestone Gallery\, Neihu
+DESCRIPTION:Confirmed: 13 Jun–18 Jul 2026.
+DTSTART;VALUE=DATE:20260718
+DTEND;VALUE=DATE:20260719
+END:VEVENT
+BEGIN:VEVENT
+UID:gallery-neihu-sat@taipei-field-notes
+DTSTAMP:20260701T031833Z
+SUMMARY:Neihu gallery day — TKG+ / Tina Keng cluster
+LOCATION:Ln 548 Ruiguang Rd\, Neihu (one building)
+DESCRIPTION:TKG+\, TKG+ Projects and Tina Keng share No.15\, Ln 548 Ruiguang Rd. Tue–Sat 11–6. After the 4–10 Jul closings their autumn shows reopen in late Aug (2024: 17 Aug\; 2025: 26 Aug) — receptions land on a Saturday 4:30pm. Check tkgplus.com for the dated announcement.
+DTSTART;VALUE=DATE:20260704
+DTEND;VALUE=DATE:20260705
+END:VEVENT
+END:VCALENDAR

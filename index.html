@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  :root{--bg:#101218;--panel:#171a21;--panel2:#1e222b;--border:#2b2f3a;--text:#edebe5;--text2:#c7c5bd;--muted:#8e8c84;--mutedDim:#5c5a54;--accent:#ece7de}
+  body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#33363f;border-radius:10px}
+  ::-webkit-scrollbar-track{background:transparent}
+  .leaflet-tooltip.nb,.leaflet-tooltip.sp{background:var(--panel);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:11px;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.45);padding:2px 7px;border-radius:4px}
+  .leaflet-tooltip.nb:before,.leaflet-tooltip.sp:before{display:none}
+  .leaflet-container{font-family:'IBM Plex Sans',sans-serif;background:#0c0d11}
+  .leaflet-bar,.leaflet-bar a{background:var(--panel2) !important;border-color:var(--border) !important;color:var(--text) !important}
+  .leaflet-bar a:hover{background:var(--panel) !important}
+  .leaflet-control-attribution{background:rgba(23,26,33,.85) !important;color:var(--muted) !important}
+  .leaflet-control-attribution a{color:var(--text2) !important}
+  .home-div{background:transparent;border:0}
+  .home-star{position:relative;width:42px;height:42px;display:flex;align-items:center;justify-content:center}
+  .home-star svg{position:relative;z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+  .home-star::before{content:'';position:absolute;width:34px;height:34px;border-radius:50%;background:rgba(214,69,60,.35);z-index:1;animation:homePulse 2.1s ease-out infinite}
+  @keyframes homePulse{0%{transform:scale(.55);opacity:.85}70%{transform:scale(1.6);opacity:0}100%{transform:scale(1.6);opacity:0}}
+</style>
+</helmet>
+<div style="height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text)">
+  <header style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;border-bottom:1px solid var(--border)">
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <h1 style="margin:0;font-size:21px;font-weight:600;letter-spacing:-.015em">Taipei</h1>
+      <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">台北 · field notes</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="font-size:12px;color:var(--muted)">Picking a base for a few months building music hardware</div>
+      <button type="button" onClick="{{ openIcs }}" style="font:500 12px/1 'IBM Plex Sans',sans-serif;padding:8px 13px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer">Preview calendar</button>
+      <button type="button" onClick="{{ downloadICS }}" title="Download galleries, music nights & meetups as a calendar file (Jul 1 – Sep 15)" style="font:500 12px/1 'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#14161b;cursor:pointer">⤓ .ics</button>
+    </div>
+  </header>
+
+  <main ref="{{ mainRef }}" style="flex:1;min-height:0;display:flex;flex-direction:column">
+
+    <!-- MAP (always open) -->
+    <div style="flex:none;height:{{ mapHeight }};min-height:180px;position:relative">
+      <div ref="{{ mapRef }}" style="position:absolute;inset:0;background:#0c0d11"></div>
+      <div style="position:absolute;left:14px;bottom:18px;z-index:500;background:rgba(20,22,28,.92);border:1px solid var(--border);border-radius:8px;padding:10px 13px;box-shadow:0 4px 16px rgba(0,0,0,.4)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:11px">
+          <sc-for list="{{ legend }}" as="l" hint-placeholder-count="10">
+            <button type="button" data-cat="{{ l.cat }}" onClick="{{ toggleCat }}" style="{{ l.rowStyle }}"><span style="{{ l.dotStyle }}"></span>{{ l.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAG DIVIDER -->
+    <div onPointerDown="{{ startDrag }}" style="flex:none;height:11px;cursor:row-resize;background:var(--panel2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;touch-action:none" title="Drag to resize">
+      <span style="width:40px;height:4px;border-radius:3px;background:#3a3f4c"></span>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <aside style="flex:1 1 0;min-height:160px;background:var(--panel);display:flex;flex-direction:column">
+      <div style="flex:none;display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border)">
+        <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="7">
+          <button type="button" data-key="{{ tab.key }}" onClick="{{ setTab }}" style="{{ tab.style }}">{{ tab.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="position:relative;flex:1;min-height:0">
+        <div style="position:absolute;left:0;right:0;top:0;height:18px;pointer-events:none;z-index:6;opacity:{{ topShadow }};transition:opacity .15s;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0))"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:18px;pointer-events:none;z-index:6;opacity:{{ bottomShadow }};transition:opacity .15s;background:linear-gradient(to top,rgba(0,0,0,.5),rgba(0,0,0,0))"></div>
+        <div ref="{{ scrollRef }}" onScroll="{{ onScroll }}" style="height:100%;overflow:auto">
+          <div style="padding:18px 18px 44px">
+            <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px">
+              <span style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)">{{ activeLabel }}</span>
+              <span style="font:500 11px/1 'IBM Plex Mono',monospace;color:var(--mutedDim)">{{ activeCount }}</span>
+            </div>
+            <p style="margin:0 0 16px;font-size:12.5px;color:var(--muted);line-height:1.5;max-width:640px">{{ activeIntro }}</p>
+
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px;color:var(--muted);padding:8px 0">Nothing here yet.</div>
+            </sc-if>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+              <sc-for list="{{ activeList }}" as="v" hint-placeholder-count="6">
+                <div id="card-{{ v.id }}" style="{{ v.cardStyle }}">
+                  <button type="button" data-id="{{ v.id }}" data-cat="{{ v.cat }}" onClick="{{ selectCard }}" style="display:flex;flex-direction:column;gap:6px;text-align:left;background:none;border:0;padding:0;cursor:pointer;width:100%;color:var(--text)">
+                    <div style="display:flex;align-items:center;gap:8px;width:100%">
+                      <span style="font:500 9.5px/1.3 'IBM Plex Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--panel2);padding:4px 7px;border-radius:5px">{{ v.tag }}</span>
+                      <span style="font:500 11px/1 'IBM Plex Sans',sans-serif;color:var(--muted);margin-left:auto;text-align:right">{{ v.neighborhood }}</span>
+                    </div>
+                    <div style="width:100%">
+                      <span style="font-size:15.5px;font-weight:600;letter-spacing:-.01em">{{ v.name }}</span>
+                      <sc-if value="{{ v.hasZh }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--muted);margin-left:6px">{{ v.zh }}</span></sc-if>
+                    </div>
+                  </button>
+
+                  <sc-if value="{{ v.hasDate }}" hint-placeholder-val="{{ false }}"><div style="{{ v.dateStyle }}">{{ v.date }}</div></sc-if>
+
+                  <div style="font-size:12.5px;line-height:1.5;color:var(--text2);margin-top:9px">{{ v.summary }}</div>
+
+                  <sc-if value="{{ v.selected }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;display:flex;flex-direction:column;gap:11px">
+                      <sc-if value="{{ v.isNei }}" hint-placeholder-val="{{ false }}">
+                        <div><div style="font:500 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">Feels like (Tokyo)</div><div style="font-size:13px">{{ v.tokyo }}</div></div>
+                        <div><div style="font:500 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px">MRT lines</div><div style="font-size:13px">{{ v.mrt }}</div></div>
+                        <div style="display:flex;flex-direction:column;gap:9px">
+                          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text2)">Walkability / MRT</span><span style="display:flex;gap:5px"><sc-for list="{{ v.walkDots }}" as="dot" hint-placeholder-count="5"><button type="button" data-nid="{{ dot.nid }}" data-dim="{{ dot.dim }}" data-val="{{ dot.val }}" onClick="{{ setRating }}" style="{{ dot.style }}"></button></sc-for></span></div>
+                          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text2)">Food &amp; things to do</span><span style="display:flex;gap:5px"><sc-for list="{{ v.vibeDots }}" as="dot" hint-placeholder-count="5"><button type="button" data-nid="{{ dot.nid }}" data-dim="{{ dot.dim }}" data-val="{{ dot.val }}" onClick="{{ setRating }}" style="{{ dot.style }}"></button></sc-for></span></div>
+                          <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:12px;color:var(--text2)">Value / rent</span><span style="display:flex;gap:5px"><sc-for list="{{ v.valueDots }}" as="dot" hint-placeholder-count="5"><button type="button" data-nid="{{ dot.nid }}" data-dim="{{ dot.dim }}" data-val="{{ dot.val }}" onClick="{{ setRating }}" style="{{ dot.style }}"></button></sc-for></span></div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ v.hasDetails }}" hint-placeholder-val="{{ false }}">
+                        <div>
+                          <div style="font:500 9.5px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Good to know</div>
+                          <div style="display:flex;flex-direction:column;gap:6px">
+                            <sc-for list="{{ v.details }}" as="row" hint-placeholder-count="3">
+                              <div style="display:flex;gap:9px;font-size:12px;line-height:1.4">
+                                <span style="flex:none;width:74px;color:var(--muted);font-weight:500">{{ row.k }}</span>
+                                <span style="color:var(--text2)">{{ row.v }}</span>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ v.hasStatus }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:#E2A053;background:rgba(194,121,28,.16);border-radius:6px;padding:6px 9px">{{ v.status }}</div></sc-if>
+
+                      <div style="display:flex;gap:8px;align-items:center">
+                        <a href="{{ v.link }}" target="_blank" rel="noopener" style="font:500 12px/1 'IBM Plex Sans',sans-serif;text-decoration:none;color:#14161b;background:var(--accent);padding:9px 12px;border-radius:7px">Look it up ↗</a>
+                        <button type="button" data-id="{{ v.id }}" onClick="{{ deleteById }}" style="margin-left:auto;font:500 11.5px 'IBM Plex Sans',sans-serif;color:#e2685a;background:transparent;border:1px solid rgba(226,104,90,.4);border-radius:7px;padding:8px 11px;cursor:pointer">{{ v.deleteLabel }}</button>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <sc-if value="{{ showIcs }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeIcs }}" style="position:fixed;inset:0;z-index:1000;background:rgba(4,5,7,.72);display:flex;align-items:center;justify-content:center;padding:24px">
+      <div onClick="{{ stopProp }}" style="width:100%;max-width:640px;max-height:86vh;background:var(--panel);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.55)">
+        <div style="flex:none;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)">
+          <div>
+            <div style="font-size:16px;font-weight:600">Calendar preview</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">Jul 1 – Sep 15 · {{ icsEventCount }} dated events</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button type="button" onClick="{{ downloadICS }}" style="font:500 12px/1 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:7px;border:1px solid var(--accent);background:var(--accent);color:#14161b;cursor:pointer">⤓ Download .ics</button>
+            <button type="button" onClick="{{ closeIcs }}" style="width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;line-height:1">×</button>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;overflow:auto;padding:14px 20px 24px">
+          <sc-if value="{{ hasRecurring }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:18px">
+              <div style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Recurring / ongoing</div>
+              <sc-for list="{{ recurringItems }}" as="r" hint-placeholder-count="2">
+                <div style="display:flex;gap:9px;align-items:baseline;padding:5px 0">
+                  <span style="width:8px;height:8px;border-radius:50%;flex:none;background:{{ r.color }}"></span>
+                  <span style="font-size:13px">{{ r.title }} <span style="color:var(--muted);font-size:12px">— {{ r.cadence }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-for list="{{ agendaDays }}" as="day" hint-placeholder-count="4">
+            <div style="margin-bottom:14px">
+              <div style="font:600 12.5px/1 'IBM Plex Mono',monospace;letter-spacing:.06em;color:var(--text2);padding:6px 0">{{ day.label }}</div>
+              <sc-for list="{{ day.events }}" as="ev" hint-placeholder-count="2">
+                <div style="display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--border)">
+                  <span style="flex:none;width:4px;border-radius:2px;background:{{ ev.color }};align-self:stretch"></span>
+                  <div style="flex:none;width:66px;font:500 11.5px/1.3 'IBM Plex Mono',monospace;color:var(--muted);padding-top:1px">{{ ev.timeLabel }}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:13.5px;font-weight:500">{{ ev.title }}</div>
+                    <sc-if value="{{ ev.hasLoc }}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px;color:var(--muted);margin-top:2px">{{ ev.loc }}</div></sc-if>
+                  </div>
+                  <span style="flex:none;font:500 9.5px/1.3 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.05em;color:{{ ev.color }};padding-top:2px">{{ ev.catLabel }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:860},&quot;mapTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Light&quot;,&quot;Dark&quot;,&quot;Streets&quot;],&quot;default&quot;:&quot;Dark&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.NEI = [
+      {id:'daan',     name:"Da'an",              zh:'大安區',      lat:25.0264, lng:121.5435, tokyo:'Daikanyama / Nakameguro', mrt:'Red, Green, Brown', knownFor:'Leafy and walkable, cafés everywhere, Daan Forest Park. Central and a little pricey — the easy first choice.'},
+      {id:'xinyi',    name:'Xinyi',              zh:'信義區',      lat:25.0335, lng:121.5670, tokyo:'Roppongi / Marunouchi',   mrt:'Red, Blue',         knownFor:'Taipei 101, malls, offices, nightlife. Modern and glossy; the most expensive area.'},
+      {id:'zhongshan',name:'Zhongshan',          zh:'中山區',      lat:25.0530, lng:121.5210, tokyo:'Ginza × Omotesando',      mrt:'Red, Green, Orange',knownFor:'Boutiques on Chifeng St, galleries, hotels, great MRT hub. Stylish and very connected.'},
+      {id:'songshan', name:'Songshan / Minsheng',zh:'松山·民生社區',lat:25.0590, lng:121.5600, tokyo:'Jiyūgaoka',               mrt:'Green, Brown nearby',knownFor:'Tree-lined Minsheng Community and design-y Fujin St. Calm, residential, quietly cool.'},
+      {id:'zhongzheng',name:'Zhongzheng',        zh:'中正區',      lat:25.0440, lng:121.5180, tokyo:'Chiyoda',                 mrt:'Red, Blue, Green, Orange',knownFor:'Taipei Main Station, government district, Guang Hua nearby. Unbeatable transit, less personality.'},
+      {id:'datong',   name:'Datong / Dadaocheng',zh:'大同·大稻埕', lat:25.0560, lng:121.5100, tokyo:'Kuramae / Yanaka',        mrt:'Orange, Red nearby',knownFor:'Old town along Dihua St — temples, tea, indie makers. Characterful and noticeably cheaper.'},
+      {id:'wanhua',   name:'Wanhua / Ximending', zh:'萬華·西門',   lat:25.0421, lng:121.5074, tokyo:'Harajuku Takeshita × Asakusa',mrt:'Blue, Green',    knownFor:'Ximending youth shopping, Longshan Temple, street food. Lively and gritty, older bones.'},
+      {id:'neihu',    name:'Neihu',              zh:'內湖區',      lat:25.0793, lng:121.5755, tokyo:'Shinagawa tech belt',     mrt:'Brown',             knownFor:'Neihu Tech Park — hardware, electronics and IT firms cluster here. Suburban and a bit car-dependent.'},
+      {id:'nangang',  name:'Nangang',            zh:'南港區',      lat:25.0539, lng:121.6066, tokyo:'Tamachi / Shinagawa',     mrt:'Blue, Brown',       knownFor:'Software Park, HSR hub, biotech and new towers. Emerging but far on the east edge.'},
+      {id:'shilin',   name:'Shilin / Tianmu',    zh:'士林·天母',   lat:25.1150, lng:121.5310, tokyo:'Kichijōji',               mrt:'Red',               knownFor:'Famous night market plus the expat-favored Tianmu. Greener and hillier, farther from the core.'}
+    ];
+    this.CAT = {
+      all:        {label:'All', color:'#ece7de', intro:'Everything on the map. Pills filter the dots to one category; toggle items in the key to add or remove categories on top of that filter.'},
+      home:       {label:'Home', color:'#D6453C', intro:'Where you\u2019re staying — your anchor for judging everything else by distance and commute.'},
+      nei:        {label:'Neighborhoods', color:'#2F6FB0', intro:'How each area feels (with a Tokyo analogy), its MRT access, and your own ratings. Tap a card to expand it.'},
+      electronics:{label:'Electronics & parts', color:'#C2791C', intro:'Markets and shops for gear, components and tools — from Guang Hua\u2019s floors to back-alley parts streets.'},
+      shopping:   {label:'Shopping districts',  color:'#D4658A', intro:'Boutique streets and shopping zones — your Cat Street equivalents.'},
+      coworking:  {label:'Coworking & startup', color:'#2E8B6F', intro:'Hubs and spaces for the startup / hardware community. Some pins are approximate — confirm and add your own.'},
+      music:      {label:'Music venues', short:'Music', color:'#8B4FBF', intro:'Experimental live houses, leftfield electronic, and listening / DJ bars — no big EDM rooms. Verify hours before a trip out.'},
+      meetup:     {label:'Startup meetups', short:'Meetup', color:'#1C8FA3', intro:'Recurring startup & tech meetups. Most rotate venues and exact dates — tap the link for the next one. Pins are approximate.'},
+      gallery:    {label:'Galleries', short:'Gallery', color:'#5E60CE', intro:'Serious contemporary galleries in the ShugoArts / Snow Contemporary mold — curatorial, artist-led, blue-chip-adjacent. Most close Mondays; verify the current show before going.'},
+      anchor:     {label:'Transit / landmark',  color:'#9C9388', intro:'Reference points for orienting and timing commutes.'}
+    };
+    this.MTYPE = {club:'Club / electronic', livehouse:'Live house', djbar:'DJ bar', listening:'Listening bar'};
+    this.SPOTS = [
+      {id:'home', name:'Home — Chifeng St', zh:'赤峰街71巷26號', cat:'home', nb:'datong', lat:25.0566, lng:121.5204, about:'Where you\u2019re staying — No. 26, Lane 71, Chifeng Street, Datong (光能里). Right in the Chifeng boutique lanes, a few minutes from Zhongshan and Shuanglian MRT.'},
+      // electronics
+      {id:'guanghua', name:'Guang Hua Digital Plaza', zh:'光華商場', cat:'electronics', nb:'zhongzheng', lat:25.0445, lng:121.5325, about:'Taipei\u2019s Akihabara — six floors of PCs, parts, gadgets and repair stalls, with parts alleys spilling onto Bade Rd behind. Start here.', details:[{k:'Hours',v:'Daily ~10am–9pm'},{k:'Layout',v:'6 floors + parts alleys on Bade Rd behind'},{k:'Prices',v:'Fixed & posted — little bargaining'},{k:'MRT',v:'Zhongxiao Xinsheng (Blue/Orange) Exit 1'}]},
+      {id:'syntrend', name:'Syntrend', zh:'三創生活園區', cat:'electronics', nb:'zhongzheng', lat:25.0438, lng:121.5332, about:'Sleek Hon Hai flagship next to Guang Hua — high-end showrooms, gaming, VR, maker gear and events.', details:[{k:'Hours',v:'Daily ~11am–9:30pm'},{k:'What',v:'Showrooms, gaming/VR, events; pricier'},{k:'Where',v:'Right next to Guang Hua'}]},
+      {id:'taiyuan',  name:'Taiyuan Rd Electronics Market', zh:'太原路電子材料', cat:'electronics', nb:'datong', lat:25.0508, lng:121.5130, about:'Back-alley components, connectors, tools and wholesale near Taipei Main — the real parts district for hardware builders.', details:[{k:'Hours',v:'Roughly Mon–Sat ~9am–6pm; quiet Sun'},{k:'What',v:'Components, connectors, tools, wholesale'},{k:'MRT',v:'Daqiaotou (Orange) / Taipei Main'}]},
+      // shopping
+      {id:'chifeng',  name:'Chifeng St', zh:'赤峰街', cat:'shopping', nb:'zhongshan', lat:25.0556, lng:121.5203, about:'Narrow lanes of indie boutiques, coffee and design shops amid old auto-parts stores — your Cat Street.'},
+      {id:'fujin',    name:'Fujin St', zh:'富錦街', cat:'shopping', nb:'songshan', lat:25.0588, lng:121.5605, about:'Leafy, low-key designer street — concept stores and cafés. The \u201cBrooklyn of Taipei\u201d.'},
+      {id:'ximending',name:'Ximending', zh:'西門町', cat:'shopping', nb:'wanhua', lat:25.0421, lng:121.5074, about:'Youth fashion, sneakers, streetwear and tattoo shops. Harajuku-Takeshita energy.'},
+      // coworking / startup
+      {id:'tta',      name:'Taiwan Tech Arena (TTA)', zh:'', cat:'coworking', nb:'songshan', lat:25.0510, lng:121.5505, about:'Government-backed hub at Taipei Arena focused on hardware / IoT and deep tech, with international accelerator tracks and demo space.', details:[{k:'Focus',v:'Hardware / IoT / deep tech; accelerators'},{k:'Hours',v:'Weekday business hours; events vary'},{k:'Where',v:'Taipei Arena complex, Songshan'},{k:'For you',v:'Best first stop for the hardware scene'}]},
+      {id:'futureward',name:'FutureWard', zh:'', cat:'coworking', nb:'zhongshan', lat:25.0700, lng:121.5430, about:'Maker-leaning coworking space with prototyping resources and frequent startup events; close ties to TTA and the Gold Card community.', status:'Location approximate — confirm the address & hours.', details:[{k:'Type',v:'Maker coworking + prototyping'},{k:'Note',v:'Confirm current address & hours'}]},
+      {id:'cic',      name:'CIC Taipei', zh:'', cat:'coworking', nb:'xinyi', lat:25.0360, lng:121.5650, about:'Global innovation-campus brand — coworking, labs and a dense startup community with steady programming.', status:'Verify Taipei location & current availability.', details:[{k:'Type',v:'Coworking + labs; dense community'},{k:'Note',v:'Confirm location & availability'}]},
+      {id:'startupterrace', name:'Startup Terrace', zh:'林口新創園', cat:'coworking', nb:null, noMap:true, about:'Large government startup campus with hardware labs and subsidised space — but out in Linkou, New Taipei.', status:'~40 min west in Linkou — off this map.', details:[{k:'Where',v:'Linkou, New Taipei (~40 min west)'},{k:'What',v:'Govt campus, hardware labs, subsidised space'}]},
+      // music
+      {id:'pawnshop', name:'Pawnshop', zh:'當鋪', cat:'music', type:'club', nb:'daan', lat:25.0335, lng:121.5548, about:'From the Korner team — a 3-room underground spot for techno and leftfield electronic. Berlin-ish, queer-friendly, sound-first (not a big EDM room).', details:[{k:'Hours',v:'Fri–Sat, ~11pm til 7–8am'},{k:'Door',v:'NT$700–1000, cash; bag search; no photos'},{k:'Sound',v:'Funktion-One · 3 rooms (techno / house / live)'},{k:'Getting in',v:'B1, 279 Sec.4 Xinyi Rd; taxi home after MRT'},{k:'Listings',v:'RA + @pawnshop_taipei on IG'}]},
+      {id:'final',    name:'FINAL', zh:'', cat:'music', type:'club', nb:'daan', lat:25.0336, lng:121.5440, about:'Deconstructed-club / avant-garde nights — cosplay, fashion, the weirder end of electronic. Closest in spirit to Forestlimit.', status:'Was still active in 2023 — confirm current status & events on IG before heading out.', details:[{k:'Scene',v:'Deconstructed / avant-garde club nights'},{k:'When',v:'Weekend late; event-driven'},{k:'Check',v:'IG for lineups before going'}]},
+      {id:'thewall',  name:'The Wall / The Bar', zh:'這牆', cat:'music', type:'livehouse', nb:'zhongzheng', lat:25.0157, lng:121.5340, about:'Mainstay Gongguan live house; the adjoining Bar is where indie and electronic crowds mix. Inclusive and unpretentious. Jul–Aug lineup is in the calendar.', details:[{k:'Type',v:'Live house + adjoining bar'},{k:'Address',v:'B1, No.200 Sec.4 Roosevelt Rd'},{k:'Listings',v:'thewalllivehouse.kktix.cc — full dated lineup'},{k:'MRT',v:'Gongguan (Green), ~5 min walk'}]},
+      {id:'pipe',     name:'PIPE Live Music', zh:'', cat:'music', type:'livehouse', nb:'zhongzheng', lat:25.0125, lng:121.5210, about:'Riverside live house hosting DJ and electronic one-offs alongside bands. Roomy and scrappy.', details:[{k:'Type',v:'Riverside live house'},{k:'When',v:'Event nights — check listings'},{k:'Note',v:'By Guting riverside park'}]},
+      {id:'revolver', name:'Revolver', zh:'', cat:'music', type:'djbar', nb:'zhongzheng', lat:25.0330, lng:121.5185, about:'Two floors near CKS — bar below, DJs and small live sets upstairs. Long-running, expat-friendly, easy weeknight hang.', details:[{k:'Hours',v:'Daily, ~8pm til late'},{k:'Vibe',v:'Bar below, DJs/live upstairs; low cover'},{k:'MRT',v:'CKS Memorial / Dongmen'}]},
+      {id:'waitingroom', name:'Waiting Room', zh:'', cat:'music', type:'livehouse', nb:'daan', lat:25.0246, lng:121.5290, about:'Tiny Shida basement for experimental, noise and leftfield bookings. DIY and intimate — very Forestlimit-coded.', details:[{k:'Type',v:'Tiny basement — experimental / noise'},{k:'When',v:'Event nights only — check IG'},{k:'MRT',v:'Taipower Building / Shida'}]},
+      {id:'witchhouse', name:'Witch House', zh:'女巫店', cat:'music', type:'livehouse', nb:'daan', lat:25.0182, lng:121.5343, about:'Cozy NTU-area institution for singer-songwriters and quieter experimental sets. Candlelit and low-key.', details:[{k:'Type',v:'Café live house, ticketed sets'},{k:'Scene',v:'Singer-songwriter & quiet experimental'},{k:'MRT',v:'Gongguan / NTU area'}]},
+      {id:'aha',      name:'AHA Saloon', zh:'', cat:'music', type:'listening', nb:'songshan', lat:25.0515, lng:121.5440, about:'Vinyl-and-cassette listening bar with lo-fi, soul and ambient on rotation, plus serious cocktails. The posh, conversational end of your taste.', details:[{k:'Type',v:'Vinyl listening + cocktail bar'},{k:'Hours',v:'Evenings; verify days open'},{k:'Note',v:'Conversation-friendly, not a dancefloor'}]},
+      {id:'winervlt', name:'WINE RVLT', zh:'台VLT', cat:'music', type:'listening', nb:'zhongshan', lat:25.0490, lng:121.5320, about:'Industrial natural-wine bar on Civic Blvd with a constantly-changing curated playlist. Social, design-y, Tribeca-adjacent.', details:[{k:'Type',v:'Natural-wine listening bar'},{k:'Hours',v:'Evenings; closed some weekdays — verify'},{k:'Area',v:'Civic Blvd, Zhongshan'}]},
+      // startup meetups
+      {id:'moxfriday', name:'MOX Friday', zh:'', cat:'meetup', nb:'daan', lat:25.0410, lng:121.5450, date:'1st Friday · monthly', about:'SOSV / MOX\u2019s long-running ecosystem happy hour — relaxed founder + investor mingling. A reliable first foothold in the scene.', status:'Venue can vary — check the listing.', url:'https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV', details:[{k:'Format',v:'Evening happy hour, casual'},{k:'Good for',v:'Meeting founders + investors early on'}]},
+      {id:'startupgrind', name:'Startup Grind Taipei', zh:'', cat:'meetup', nb:'daan', lat:25.0440, lng:121.5400, date:'Monthly', about:'Local chapter of the global founder community — monthly fireside talks plus networking. Good for structured intros.', status:'Venue varies by event.', url:'https://www.startupgrind.com/taipei/'},
+      {id:'techtaipei', name:'TechTaipei', zh:'', cat:'meetup', nb:'daan', lat:25.0330, lng:121.5440, date:'Every few months', about:'Casual drinks-and-pizza meetup for people working in tech in Taiwan. Low-key, friendly, English-speaking.', status:'Rotating bars (Craft House, Red Room…).', url:'https://techtaipei.com/'},
+      {id:'tsec', name:'Taiwan Startup Ecosystem Community', zh:'', cat:'meetup', nb:'zhongshan', lat:25.0470, lng:121.5320, date:'Monthly', about:'Networking events, startup lectures and monthly pitching focused on the Taiwan ecosystem. Active Meetup group.', status:'Venue varies — RSVP on Meetup.', url:'https://www.meetup.com/taiwan-startup-ecosystem-community/'},
+      {id:'ten', name:'Taiwan Entrepreneurs Network', zh:'', cat:'meetup', nb:'daan', lat:25.0380, lng:121.5430, date:'Regular', about:'Casual networking events and workshops open to all — a broad, welcoming entry point to Taipei founders.', status:'Venue varies — RSVP on Meetup.', url:'https://www.meetup.com/Taiwan-Entrepreneurs-Network/'},
+      {id:'meettaipei', name:'Meet Taipei Startup Festival', zh:'', cat:'meetup', nb:'zhongshan', lat:25.0810, lng:121.5230, date:'Annual · late November', about:'Asia\u2019s biggest startup festival — hundreds of teams, investors and international founders at the Expo Dome. The one big date to plan around.', status:'Annual; 2025 ran Nov 20–22 at Expo Dome.', url:'https://duckduckgo.com/?q=Meet+Taipei+startup+festival', details:[{k:'When',v:'Late Nov (2025: Nov 20–22)'},{k:'Where',v:'Taipei Expo Dome, Yuanshan'},{k:'Scale',v:'Hundreds of teams + intl investors'}]}
+    ];
+    this.SPOTS.push({id:'eachmodern', name:'Each Modern', zh:'亞紀畫廊', cat:'gallery', nb:'daan', lat:25.0335, lng:121.5380, about:'Refined Da\u2019an gallery showing Asian and international contemporary alongside rediscovered modern figures — the closest in spirit to ShugoArts. Considered hangs, strong programme.', status:'Pin approximate — confirm address & current show.', details:[{k:'Hours',v:'Tue–Sat ~12–7pm; closed Sun–Mon'},{k:'Now showing',v:'Antone Könst — “Subjects”, 13 Jun–25 Jul 2026'},{k:'Opened',v:'Sat 13 Jun'},{k:'Roster',v:'Shohei Takasaki, Antone Könst, Xu Jiong'}]});
+    this.SPOTS.push({id:'projectfulfill', name:'Project Fulfill Art Space', zh:'就在藝術空間', cat:'gallery', nb:'daan', lat:25.0335, lng:121.5440, about:'Established 2008; tucked off Xinyi Rd, it emphasises site-specific, concept-driven shows by emerging and mid-career artists. Quietly one of the best.', details:[{k:'Hours',v:'Tue–Sat ~1–7pm; closed Sun–Mon'},{k:'Address',v:'Alley 45, Ln 147, Sec 3, Xinyi Rd'},{k:'MRT',v:'Daan / Zhongxiao Dunhua'}]});
+    this.SPOTS.push({id:'tkgplus', name:'TKG+', zh:'', cat:'gallery', nb:'neihu', lat:25.0796, lng:121.5760, about:'The experimental contemporary arm of Tina Keng — ambitious, museum-grade installations and new media by Asian artists. Anchor of the Neihu gallery cluster.', details:[{k:'Hours',v:'Tue–Sat 11–6pm; closed Sun–Mon'},{k:'Now showing',v:'Mit Jai Inn “CYCLES” + Enrico Oyama (TKG+ Projects) — both thru 4 Jul 2026'},{k:'Receptions',v:'Confirmed pattern: Saturdays 4:30pm'},{k:'Next',v:'Autumn show opens late Aug (TBA) — Tina Keng Su Meng-Hung runs thru 10 Jul'}]});
+    this.SPOTS.push({id:'doublesquare', name:'Double Square Gallery', zh:'双方藝廊', cat:'gallery', nb:'neihu', lat:25.0808, lng:121.5535, about:'Two-room space for multidisciplinary, concept-driven shows by Taiwanese and international contemporary artists. Curator-minded and ambitious.', status:'Pin approximate — confirm address.', details:[{k:'Hours',v:'Tue–Sat ~11–6:30pm; closed Sun–Mon'},{k:'Focus',v:'Concept-driven contemporary'},{k:'Area',v:'Dazhi / Zhongshan edge'}]});
+    this.SPOTS.push({id:'bluerider', name:'Bluerider ART', zh:'', cat:'gallery', nb:'daan', lat:25.0382, lng:121.5535, about:'Polished commercial gallery (est. 2013) focused on Western contemporary art in Asia — rare here. Main space on Dunhua S Rd, plus Ren\u2019ai halls.', details:[{k:'Hours',v:'Tue–Sun 10–6:30pm; closed Mon'},{k:'Main space',v:'1F, No.77 Sec.2 Dunhua S Rd, Da\u2019an'},{k:'Now showing',v:'Current show 23 May–19 Jul 2026'},{k:'Openings',v:'Fri press preview + Sat reception 2:30–6pm'}]});
+    this.SPOTS.push({id:'chiwen', name:'Chi-Wen Gallery', zh:'其玟畫廊', cat:'gallery', nb:'shilin', lat:25.0955, lng:121.5260, about:'Leading voice for video, photography and new-media art — championed Yuan Goang-Ming and a generation of experimental Taiwanese artists.', status:'By appointment / pin approximate — confirm before visiting.', details:[{k:'Hours',v:'Often by appointment — email ahead'},{k:'Focus',v:'Video, photography, new media'},{k:'Area',v:'Shilin'}]});
+    this.SPOTS.push({id:'eslitegallery', name:'Eslite Gallery', zh:'誠品畫廊', cat:'gallery', nb:'songshan', lat:25.0440, lng:121.5608, about:'Taiwan\u2019s first contemporary gallery (1989) — a heavyweight showing major Chinese and intl artists (Cai Guo-Qiang, Liu Xiaodong, Xu Bing). Reliable, well-produced shows.', details:[{k:'Hours',v:'Tue–Sat 11–7pm; closed Sun–Mon'},{k:'Address',v:'B1, No.88 Yanchang Rd, Songshan'},{k:'Note',v:'By Songshan Cultural & Creative Park'}]});
+    this.SPOTS.push({id:'whitestone', name:'Whitestone Gallery', zh:'白石畫廊', cat:'gallery', nb:'neihu', lat:25.0802, lng:121.5762, about:'Tokyo gallery (est. 1967) with a striking cypress-wood Kuma-designed Taipei space in Neihu. Shows Japanese and Asian contemporary — a natural fit if you like the Tokyo blue-chips.', status:'Pin approximate — confirm address.', details:[{k:'Hours',v:'Tue–Sun 11–7pm; closed Mon'},{k:'Now showing',v:'Karen Shiozawa — “Emerald Ocean”, 13 Jun–18 Jul 2026'},{k:'Area',v:'Neihu, near the TKG cluster'}]});
+    this.SPOTS.push({id:'mainsta', name:'Taipei Main', zh:'台北車站', cat:'anchor', nb:'zhongzheng', lat:25.0478, lng:121.5170, about:'The central transit knot — MRT, TRA and HSR all meet here.'});
+    this.SPOTS.push({id:'t101', name:'Taipei 101', zh:'台北101', cat:'anchor', nb:'xinyi', lat:25.0339, lng:121.5645, about:'The landmark and Xinyi anchor — useful reference for the east side.'});
+    this.MRT = [
+      {name:'Red', color:'#E3002C', pts:[[25.0931,121.5260],[25.0852,121.5254],[25.0712,121.5197],[25.0625,121.5197],[25.0578,121.5208],[25.0525,121.5203],[25.0478,121.5170],[25.0432,121.5158],[25.0327,121.5183],[25.0337,121.5283],[25.0334,121.5347],[25.0334,121.5436],[25.0330,121.5530],[25.0339,121.5645],[25.0327,121.5705]]},
+      {name:'Green', color:'#008659', pts:[[25.0500,121.5777],[25.0515,121.5560],[25.0520,121.5440],[25.0524,121.5333],[25.0525,121.5203],[25.0490,121.5108],[25.0421,121.5080],[25.0353,121.5103],[25.0327,121.5183],[25.0263,121.5229],[25.0205,121.5273],[25.0147,121.5343]]},
+      {name:'Blue', color:'#0070BD', pts:[[25.0354,121.4999],[25.0421,121.5080],[25.0466,121.5170],[25.0447,121.5246],[25.0423,121.5331],[25.0417,121.5437],[25.0415,121.5508],[25.0411,121.5601],[25.0410,121.5677],[25.0408,121.5762],[25.0447,121.5830],[25.0506,121.5932],[25.0539,121.6066],[25.0553,121.6175]]},
+      {name:'Orange', color:'#F39800', pts:[[25.0633,121.5118],[25.0625,121.5197],[25.0593,121.5337],[25.0524,121.5333],[25.0423,121.5331],[25.0337,121.5283],[25.0263,121.5229],[25.0128,121.5135]]},
+      {name:'Brown', color:'#B57A2F', pts:[[25.0247,121.5538],[25.0263,121.5440],[25.0334,121.5436],[25.0417,121.5437],[25.0520,121.5440],[25.0608,121.5340],[25.0635,121.5519],[25.0788,121.5780],[25.0838,121.5942],[25.0700,121.6140],[25.0598,121.6155],[25.0553,121.6175]]}
+    ];
+    this.markers = {};
+    this.state = {
+      activeTab:'all', selectedId:null, visible:{}, split:60, canUp:false, canDown:true, showIcs:false,
+      data:{ ratings:{}, deleted:[] }
+    };
+  }
+
+  componentDidMount(){
+    window.__taipeiApp=this;
+    try{ var raw=localStorage.getItem('taipei-app-v1'); if(raw){ var p=JSON.parse(raw); this.setState({data:Object.assign({ratings:{},deleted:[]},{ratings:p.ratings||{},deleted:p.deleted||[]})}); } }catch(e){}
+    try{ var sp=parseFloat(localStorage.getItem('taipei-split')); if(sp>=20&&sp<=85) this.setState({split:sp}); }catch(e){}
+    this._onResize=()=>{ if(this.map) this.map.invalidateSize(); this._updShadow(); };
+    window.addEventListener('resize',this._onResize);
+    setTimeout(()=>this._updShadow(),120);
+    this._waitL();
+  }
+  componentWillUnmount(){ if(this._t) clearTimeout(this._t); if(this._onResize) window.removeEventListener('resize',this._onResize); if(this._ro) this._ro.disconnect(); if(this.scrollEl) this.scrollEl.removeEventListener('scroll',this._scrollHandler); document.removeEventListener('pointermove',this._move); document.removeEventListener('pointerup',this._end); if(this.map){ this.map.remove(); this.map=null; } }
+
+  _waitL(){ if(window.L && this.mapEl){ this._initMap(); return; } this._t=setTimeout(()=>this._waitL(),120); }
+  _tileUrl(){ var t=this.props.mapTheme||'Dark';
+    if(t==='Light')   return 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    if(t==='Streets') return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    return 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'; }
+  _initMap(){
+    var map=L.map(this.mapEl,{zoomControl:false,attributionControl:true}).setView([25.05,121.54],12);
+    this.map=map;
+    L.control.zoom({position:'topright'}).addTo(map);
+    this._tiles=L.tileLayer(this._tileUrl(),{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap, © CARTO'}).addTo(map);
+    var group=[];
+    var del=this.state.data.deleted||[];
+    this.NEI.forEach((n)=>{
+      if(del.indexOf(n.id)>=0) return;
+      var m=L.circleMarker([n.lat,n.lng],this._circle('#2F6FB0',true,false)).addTo(map);
+      m.bindTooltip(n.name,{permanent:true,direction:'right',offset:[9,0],className:'nb'});
+      m.on('click',()=>this._select(n.id,'nei'));
+      this.markers[n.id]={layer:m,color:'#2F6FB0',big:true,cat:'nei'}; group.push(m);
+    });
+    this.SPOTS.forEach((s)=>{
+      if(s.noMap||del.indexOf(s.id)>=0) return;
+      var c=(this.CAT[s.cat]||{}).color||'#9C9388';
+      if(s.cat==='home'){
+        var hm=L.marker([s.lat,s.lng],{icon:this._homeIcon(),zIndexOffset:1000}).addTo(map);
+        hm.bindTooltip(s.name,{permanent:true,direction:'top',offset:[0,-16],className:'sp'});
+        hm.on('click',()=>this._select(s.id,s.cat));
+        this.markers[s.id]={layer:hm,color:c,big:true,cat:'home',isHome:true}; group.push(hm); return;
+      }
+      var m=L.circleMarker([s.lat,s.lng],this._circle(c,false,false)).addTo(map);
+      m.bindTooltip(s.name,{permanent:true,direction:'top',className:'sp'});
+      if(s.cat!=='anchor') m.on('click',()=>this._select(s.id,s.cat));
+      this.markers[s.id]={layer:m,color:c,big:false,cat:s.cat}; group.push(m);
+    });
+    var mrtItems=[];
+    this.MRT.forEach((ln)=>{
+      mrtItems.push(L.polyline(ln.pts,{color:ln.color,weight:3,opacity:.75,lineJoin:'round',lineCap:'round',interactive:false}));
+      ln.pts.forEach((p)=>{ mrtItems.push(L.circleMarker(p,{radius:2.8,color:ln.color,weight:1.6,fillColor:'#ffffff',fillOpacity:1,interactive:false})); });
+    });
+    this.mrtLayer=L.layerGroup(mrtItems);
+    try{ var g=L.featureGroup(group); map.fitBounds(g.getBounds().pad(0.10),{maxZoom:13}); }catch(e){}
+    setTimeout(()=>map.invalidateSize(),80);
+    if(window.ResizeObserver){ try{ this._ro=new ResizeObserver(()=>{ if(this.map) this.map.invalidateSize(); }); this._ro.observe(this.mapEl); }catch(e){} }
+    this._highlight();
+    this._applyVisibility();
+  }
+  _circle(color,big,sel){ return {radius: big?(sel?11:9):(sel?9:6), color: sel?'#0e0f13':'#12141a', weight: sel?3:2, fillColor:color, fillOpacity:1}; }
+  _homeIcon(){ return L.divIcon({className:'home-div', iconSize:[42,42], iconAnchor:[21,21], html:'<div class="home-star"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01z" fill="#D6453C" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>'}); }
+  _applyVisibility(){
+    if(!this.map) return;
+    var vis=this.state.visible||{};
+    Object.keys(this.markers).forEach((id)=>{
+      var e=this.markers[id], on=vis[e.cat]!==false;
+      if(on && !this.map.hasLayer(e.layer)) e.layer.addTo(this.map);
+      else if(!on && this.map.hasLayer(e.layer)) this.map.removeLayer(e.layer);
+    });
+    if(this.mrtLayer){ var mon=vis.mrt!==false; if(mon){ if(!this.map.hasLayer(this.mrtLayer)){ this.mrtLayer.addTo(this.map); this.mrtLayer.eachLayer((l)=>{ if((l instanceof L.CircleMarker)&&l.bringToBack) l.bringToBack(); }); this.mrtLayer.eachLayer((l)=>{ if((l instanceof L.Polyline)&&!(l instanceof L.CircleMarker)&&l.bringToBack) l.bringToBack(); }); } } else if(this.map.hasLayer(this.mrtLayer)) this.map.removeLayer(this.mrtLayer); }
+    var tp=this.map.getPane&&this.map.getPane('tooltipPane'); if(tp) tp.style.display=(vis.labels===false)?'none':'';
+  }
+  _highlight(){
+    Object.keys(this.markers).forEach((id)=>{
+      var e=this.markers[id], sel=(id===this.state.selectedId);
+      if(e.isHome){ if(e.layer.setZIndexOffset) e.layer.setZIndexOffset(sel?1100:1000); return; }
+      var st=this._circle(e.color,e.big,sel);
+      e.layer.setStyle({color:st.color,weight:st.weight,fillColor:st.fillColor,fillOpacity:st.fillOpacity});
+      e.layer.setRadius(st.radius);
+      if(sel) e.layer.bringToFront();
+    });
+  }
+  componentDidUpdate(prevProps,prevState){
+    if(!this.map) return;
+    prevProps=prevProps||{}; prevState=prevState||{};
+    if(prevProps.mapTheme!==this.props.mapTheme && this._tiles) this._tiles.setUrl(this._tileUrl());
+    if(prevState.selectedId!==this.state.selectedId){ this._highlight(); if(this.state.selectedId) setTimeout(()=>this._scrollToCard(this.state.selectedId),60); }
+    if(prevState.visible!==this.state.visible) this._applyVisibility();
+    if(prevState.activeTab!==this.state.activeTab||prevState.selectedId!==this.state.selectedId) setTimeout(()=>this._updShadow(),0);
+  }
+
+  _update(fn){ this.setState((s)=>{ var d=JSON.parse(JSON.stringify(s.data)); fn(d); try{ localStorage.setItem('taipei-app-v1',JSON.stringify(d)); }catch(e){} return {data:d}; }); }
+  _select(id,cat){ this.setState((s)=>{ var nt=(s.activeTab==='all'||s.activeTab===cat)?s.activeTab:(cat||s.activeTab); return {selectedId:id, activeTab:nt}; }); }
+  _filterCats(){ return ['nei','electronics','coworking','shopping','music','gallery','meetup','anchor']; }
+  _byId(id){ return this.NEI.find((x)=>x.id===id)||this.SPOTS.find((x)=>x.id===id); }
+  _dots(nid,dim,val){ return [1,2,3,4,5].map((v)=>({nid:nid,dim:dim,val:v, style:'width:13px;height:13px;border:0;border-radius:50%;cursor:pointer;padding:0;background:'+(v<=val?'#2F6FB0':'#3a3f4c')})); }
+  _link(name,zh){ return 'https://duckduckgo.com/?q='+encodeURIComponent(name+' Taipei '+(zh||'')); }
+  _scrollToCard(id){ var sc=this.scrollEl; if(!sc) return; var el=document.getElementById('card-'+id); if(!el) return; var er=el.getBoundingClientRect(), sr=sc.getBoundingClientRect(); sc.scrollTop += (er.top - sr.top) - 14; }
+  _rgba(hex,a){ hex=String(hex||'#000000').replace('#',''); if(hex.length===3) hex=hex.split('').map((c)=>c+c).join(''); var r=parseInt(hex.substr(0,2),16),g=parseInt(hex.substr(2,2),16),b=parseInt(hex.substr(4,2),16); return 'rgba('+r+','+g+','+b+','+a+')'; }
+  _fmtTime(t){ if(!t) return ''; var parts=t.split(':'); var h=parseInt(parts[0],10); var m=parts[1]; var ap=h>=12?'PM':'AM'; var h12=h%12; if(h12===0) h12=12; return h12+':'+m+' '+ap; }
+  _fmtDay(dateStr){ var dt=new Date(dateStr+'T00:00:00'); var wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()]; var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()]; return wd+', '+mo+' '+dt.getDate(); }
+
+  setTab=(e)=>{ var key=e.currentTarget.dataset.key; this.setState((s)=>{ var cur=s.visible||{}; var v={mrt:cur.mrt, labels:cur.labels, home:cur.home}; if(key!=='all'){ this._filterCats().forEach((c)=>{ v[c]=(c===key); }); } return {activeTab:key, selectedId:null, visible:v}; }); };
+  selectCard=(e)=>{ var id=e.currentTarget.dataset.id; this.setState((s)=>({selectedId: s.selectedId===id?null:id}),()=>{ var it=this._byId(id); if(this.state.selectedId===id && this.map && it && it.lat && !it.noMap){ this.map.setView([it.lat,it.lng],14,{animate:true}); } }); };
+  toggleCat=(e)=>{ var cat=e.currentTarget.dataset.cat; this.setState((s)=>{ var v=Object.assign({},s.visible); v[cat]=v[cat]===false?true:false; return {visible:v}; }); };
+  mainRef=(el)=>{ this.mainEl=el; };
+  mapRef=(el)=>{ this.mapEl=el; };
+  _scrollHandler=()=>{ this._updShadow(); };
+  scrollRef=(el)=>{ if(this.scrollEl===el) return; if(this.scrollEl) this.scrollEl.removeEventListener('scroll',this._scrollHandler); this.scrollEl=el; if(el){ el.addEventListener('scroll',this._scrollHandler,{passive:true}); setTimeout(()=>this._updShadow(),0); } };
+  onScroll=()=>{ this._updShadow(); };
+  _updShadow(){ var el=this.scrollEl; if(!el) return; var canUp=el.scrollTop>2; var canDown=(el.scrollTop+el.clientHeight)<(el.scrollHeight-2); if(canUp!==this.state.canUp||canDown!==this.state.canDown) this.setState({canUp:canUp,canDown:canDown}); }
+  startDrag=(e)=>{ e.preventDefault(); this._drag=true; document.addEventListener('pointermove',this._move); document.addEventListener('pointerup',this._end); document.body.style.userSelect='none'; document.body.style.cursor='row-resize'; };
+  _move=(e)=>{ if(!this._drag||!this.mainEl) return; var r=this.mainEl.getBoundingClientRect(); var mapPx=e.clientY-r.top; mapPx=Math.max(180,Math.min(r.height-160,mapPx)); this.setState({split:(mapPx/r.height*100)}); if(this.map) this.map.invalidateSize(); this._updShadow(); };
+  _end=()=>{ if(!this._drag) return; this._drag=false; document.removeEventListener('pointermove',this._move); document.removeEventListener('pointerup',this._end); document.body.style.userSelect=''; document.body.style.cursor=''; try{ localStorage.setItem('taipei-split',String(this.state.split)); }catch(e){} };
+  setRating=(e)=>{ var ds=e.currentTarget.dataset, nid=ds.nid, dim=ds.dim, val=+ds.val; this._update((d)=>{ var r=Object.assign({walk:0,vibe:0,value:0},d.ratings[nid]||{}); r[dim]=(r[dim]===val?0:val); d.ratings[nid]=r; }); };
+  deleteById=(e)=>{ var id=e.currentTarget.dataset.id; if(this.markers[id]){ this.map.removeLayer(this.markers[id].layer); delete this.markers[id]; } this._update((d)=>{ d.deleted=(d.deleted||[]).concat([id]); }); this.setState({selectedId:null}); };
+  openIcs=()=>{ this.setState({showIcs:true}); };
+  closeIcs=()=>{ this.setState({showIcs:false}); };
+  stopProp=(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); };
+
+  _seedEvents(){
+    var mox='https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV';
+    var E=[];
+    [['2026-07-03'],['2026-08-07'],['2026-09-04']].forEach(function(x){ E.push({id:'mox-'+x[0], title:'MOX Friday — founder + investor happy hour', loc:'Taipei (venue varies — check listing)', date:x[0], start:'19:00', end:'21:00', cat:'meetup', desc:'SOSV/MOX ecosystem happy hour. Confirm venue: '+mox}); });
+    [['Startup Grind Taipei','2026-07-15'],['Startup Grind Taipei','2026-08-19'],['Startup Grind Taipei','2026-09-09'],['Taiwan Startup Ecosystem Community','2026-07-22'],['Taiwan Startup Ecosystem Community','2026-08-26'],['Taiwan Entrepreneurs Network','2026-07-29'],['TechTaipei drinks','2026-08-13']].forEach(function(x,i){ E.push({id:'tent-'+i, title:x[0]+' — TENTATIVE, verify date', loc:'Taipei (RSVP online)', date:x[1], allDay:true, cat:'meetup', desc:'Cadence-based placeholder — confirm the real date before relying on it.'}); });
+    E.push({id:'pawnshop-wk', title:'Pawnshop open — check RA/IG for lineup', loc:'B1, 279 Sec.4 Xinyi Rd, Da\u2019an', date:'2026-07-03', start:'23:00', end:'23:59', cat:'music', cadenceLabel:'Fri & Sat nights, through Sep 15', rrule:'FREQ=WEEKLY;BYDAY=FR,SA;UNTIL=20260915T235900Z', desc:'Techno / leftfield electronic. Lineups posted ~1–2 weeks ahead on Resident Advisor & Instagram.'});
+    var wall='The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan';
+    var wallShows=[
+      ['2026-07-04','19:00','The Wall: NO STAGE NO WALLS','Indie / punk / disco bill.'],
+      ['2026-07-05','19:30','The Wall: 肉聲菩薩 (noise / experimental)','Wall-of-sound noise night — the loud, leftfield end.'],
+      ['2026-07-11','20:00','The Wall: Malpaca 羊駝小姐 — “Now… What?”','First headline show.'],
+      ['2026-07-26','20:00','The Wall: 黃澤森 — 陰森童話故事集','Solo return after three years.'],
+      ['2026-07-30','20:00','The Wall: Friko (US) Live in Taipei','Chicago alt / post-punk — buzzy international booking.'],
+      ['2026-08-09','19:00','The Wall: MILLI — JAA EHH! Asia Tour','Thai rapper, Coachella alum.'],
+      ['2026-08-15','20:00','The Wall: DENGARYU 田我流 (JP hip-hop)','stillichimiya-affiliated Japanese hip-hop.']
+    ];
+    wallShows.forEach(function(s,i){ E.push({id:'wall-'+i, title:s[2], loc:wall, date:s[0], start:s[1], cat:'music', desc:s[3]+' Tickets: thewalllivehouse.kktix.cc'}); });
+    E.push({id:'livehouse-wk', title:'Check live houses for weekend gigs (PIPE · Waiting Room · Witch House)', loc:'Taipei', date:'2026-07-01', allDay:true, cat:'music', cadenceLabel:'Wednesdays, through Sep 15', rrule:'FREQ=WEEKLY;BYDAY=WE;UNTIL=20260915', desc:'These post bookings ~2–4 weeks out — scan for experimental / electronic nights. (The Wall\u2019s lineup is already listed above.)'});
+    E.push({id:'bluerider-close', title:'Bluerider ART — last day: current Dunhua show', loc:'Bluerider ART, No.77 Sec.2 Dunhua S Rd, Da\u2019an', date:'2026-07-19', allDay:true, cat:'gallery', desc:'Confirmed: run 23 May–19 Jul 2026 (Fri press preview + Sat 2:30–6pm reception). Also “Butterflies of Light” @ Breeze Center thru 15 Jul.'});
+    E.push({id:'tkg-cycles-close', title:'TKG+ — last day: Mit Jai Inn “CYCLES”', loc:'TKG+ B1, Ln 548 Ruiguang Rd, Neihu', date:'2026-07-04', allDay:true, cat:'gallery', desc:'Confirmed: 23 May–4 Jul 2026, reception 23 May (Sat) 4:30pm.'});
+    E.push({id:'tkg-oyama-close', title:'TKG+ Projects — last day: Enrico Isamu Oyama “Aerosolic Forms”', loc:'TKG+ Projects 2F, Ln 548 Ruiguang Rd, Neihu', date:'2026-07-04', allDay:true, cat:'gallery', desc:'Confirmed: 14 Mar–4 Jul 2026, reception 14 Mar (Sat) 4:30pm. Aerosol/calligraphic painting, w/ Takuro Someya Contemporary Art.'});
+    E.push({id:'tinakeng-su-close', title:'Tina Keng — last day: Su Meng-Hung “The Flowers of Coromandel”', loc:'Tina Keng Gallery 1F, Ln 548 Ruiguang Rd, Neihu', date:'2026-07-10', allDay:true, cat:'gallery', desc:'Confirmed: opened 8 May 2026 (reception Sat 4:30pm), closes 10–11 Jul. Same Neihu building as TKG+.'});
+    E.push({id:'eachmodern-konst-close', title:'Each Modern — last day: Antone Könst “Subjects”', loc:'Each Modern, Da\u2019an', date:'2026-07-25', allDay:true, cat:'gallery', desc:'Confirmed: 13 Jun–25 Jul 2026 (opened Sat 13 Jun).'});
+    E.push({id:'whitestone-shiozawa-close', title:'Whitestone — last day: Karen Shiozawa “Emerald Ocean”', loc:'Whitestone Gallery, Neihu', date:'2026-07-18', allDay:true, cat:'gallery', desc:'Confirmed: 13 Jun–18 Jul 2026.'});
+    E.push({id:'gallery-neihu-sat', title:'Neihu gallery day — TKG+ / Tina Keng cluster', loc:'Ln 548 Ruiguang Rd, Neihu (one building)', date:'2026-07-04', allDay:true, cat:'gallery', desc:'TKG+, TKG+ Projects and Tina Keng share No.15, Ln 548 Ruiguang Rd. Tue–Sat 11–6. After the 4–10 Jul closings their autumn shows reopen in late Aug (2024: 17 Aug; 2025: 26 Aug) — receptions land on a Saturday 4:30pm. Check tkgplus.com for the dated announcement.'});
+    return E;
+  }
+  _icsEsc(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
+  _icsDay(dateStr){ return (dateStr||'').replace(/-/g,''); }
+  _icsLocal(dateStr,timeStr){ return this._icsDay(dateStr)+'T'+(timeStr||'00:00').replace(':','')+'00'; }
+  _nextDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); d.setDate(d.getDate()+1); return d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2); }
+  _addMin(dateStr,timeStr,mins){ var d=new Date(dateStr+'T'+(timeStr||'00:00')+':00'); d.setMinutes(d.getMinutes()+mins); var p=function(n){return ('0'+n).slice(-2);}; return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T'+p(d.getHours())+p(d.getMinutes())+'00'; }
+  buildICS(){
+    var self=this;
+    var now=new Date(); var p=function(n){return ('0'+n).slice(-2);};
+    var stamp=now.getUTCFullYear()+p(now.getUTCMonth()+1)+p(now.getUTCDate())+'T'+p(now.getUTCHours())+p(now.getUTCMinutes())+p(now.getUTCSeconds())+'Z';
+    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Taipei Field Notes//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Taipei — Jul–Sep','X-WR-TIMEZONE:Asia/Taipei',
+      'BEGIN:VTIMEZONE','TZID:Asia/Taipei','BEGIN:STANDARD','DTSTART:19700101T000000','TZOFFSETFROM:+0800','TZOFFSETTO:+0800','TZNAME:CST','END:STANDARD','END:VTIMEZONE'];
+    var push=function(ev){
+      if(!ev.date) return;
+      L.push('BEGIN:VEVENT');
+      L.push('UID:'+(ev.id||('e'+Math.random().toString(36).slice(2)))+'@taipei-field-notes');
+      L.push('DTSTAMP:'+stamp);
+      L.push('SUMMARY:'+self._icsEsc(ev.title||'(untitled)'));
+      if(ev.loc) L.push('LOCATION:'+self._icsEsc(ev.loc));
+      if(ev.desc) L.push('DESCRIPTION:'+self._icsEsc(ev.desc));
+      if(ev.allDay || !ev.start){
+        L.push('DTSTART;VALUE=DATE:'+self._icsDay(ev.date));
+        L.push('DTEND;VALUE=DATE:'+self._nextDay(ev.date));
+      } else {
+        L.push('DTSTART;TZID=Asia/Taipei:'+self._icsLocal(ev.date,ev.start));
+        L.push('DTEND;TZID=Asia/Taipei:'+(ev.end?self._icsLocal(ev.date,ev.end):self._addMin(ev.date,ev.start,90)));
+      }
+      if(ev.rrule) L.push('RRULE:'+ev.rrule);
+      L.push('END:VEVENT');
+    };
+    this._seedEvents().forEach(push);
+    L.push('END:VCALENDAR');
+    return L.join('\r\n');
+  }
+  downloadICS=()=>{ try{ var s=this.buildICS(); var blob=new Blob([s],{type:'text/calendar;charset=utf-8'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='taipei-jul-sep.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },600); }catch(e){ console.error(e); } };
+
+  _buildAgenda(){
+    var self=this;
+    var seed=this._seedEvents();
+    var dated=seed.filter(function(e){ return !e.rrule && e.date; });
+    var recurringSeed=seed.filter(function(e){ return !!e.rrule; });
+    dated.sort(function(a,b){ var ak=a.date+'T'+(a.start||'00:00'); var bk=b.date+'T'+(b.start||'00:00'); return ak<bk?-1:(ak>bk?1:0); });
+    var byDay={}, order=[];
+    dated.forEach(function(e){
+      if(!byDay[e.date]){ byDay[e.date]=[]; order.push(e.date); }
+      var c=(self.CAT[e.cat]||{}).color||'#8e8c84';
+      var catLabel=(self.CAT[e.cat]||{}).short||(self.CAT[e.cat]||{}).label||'';
+      byDay[e.date].push({ title:e.title, loc:e.loc||'', hasLoc:!!e.loc, timeLabel:(e.allDay||!e.start)?'All day':self._fmtTime(e.start), color:c, catLabel:catLabel });
+    });
+    var agendaDays=order.map(function(dt){ return {label:self._fmtDay(dt), events:byDay[dt]}; });
+    var recurringItems=recurringSeed.map(function(e){ var c=(self.CAT[e.cat]||{}).color||'#8e8c84'; return {title:e.title, cadence:e.cadenceLabel||'Recurring', color:c}; });
+    return {agendaDays:agendaDays, recurringItems:recurringItems, totalDated:dated.length};
+  }
+
+  renderVals(){
+    var d=this.state.data, at=this.state.activeTab, self=this;
+    var sel=this.state.selectedId, selId=sel;
+    var nbName={}; this.NEI.forEach((n)=>{nbName[n.id]=n.name;});
+    var del=d.deleted||[]; var notDel=function(id){return del.indexOf(id)<0;};
+    var TAB=[['all','All'],['nei','Neighborhoods'],['electronics','Electronics'],['coworking','Coworking'],['shopping','Shopping'],['music','Music'],['gallery','Galleries'],['meetup','Meetups']];
+    var labelOf={}; TAB.forEach((t)=>{labelOf[t[0]]=t[1];});
+    var tabs=TAB.map((t)=>{
+      var key=t[0], label=t[1], activeSel=(at===key);
+      if(key==='all'){
+        return {key:key,label:label, style:"font:500 12.5px/1 'IBM Plex Sans',sans-serif;padding:7px 12px;border-radius:7px;cursor:pointer;border:1px solid "+(activeSel?'var(--accent)':'var(--border)')+";background:"+(activeSel?'var(--accent)':'var(--panel2)')+";color:"+(activeSel?'#14161b':'var(--text2)')};
+      }
+      var c=(self.CAT[key]||{}).color||'#8e8c84';
+      return {key:key, label:label, style:"font:500 12.5px/1 'IBM Plex Sans',sans-serif;padding:7px 12px;border-radius:7px;cursor:pointer;border:1px solid "+(activeSel?c:self._rgba(c,0.35))+";background:"+(activeSel?c:self._rgba(c,0.12))+";color:"+(activeSel?'#fff':c)};
+    });
+
+    var cardBase='border:1px solid var(--border);border-radius:11px;background:var(--panel2);padding:14px 15px;display:flex;flex-direction:column';
+    function base(v, tag, summary){
+      var s=(selId===v.id);
+      var catColor=(self.CAT[v.cat]||{}).color||'#2F6FB0';
+      var cardSel='border:1.5px solid '+catColor+';border-radius:11px;background:'+self._rgba(catColor,0.10)+';padding:13.5px 14.5px;display:flex;flex-direction:column;box-shadow:0 0 0 3px '+self._rgba(catColor,0.18);
+      var dateStyle='font:500 11px/1 "IBM Plex Sans",sans-serif;color:'+catColor+';background:'+self._rgba(catColor,0.16)+';align-self:flex-start;padding:5px 9px;border-radius:6px;display:inline-block;margin-top:9px;width:fit-content';
+      return { id:v.id, cat:v.cat, name:v.name, zh:v.zh||'', hasZh:!!v.zh, tag:tag, neighborhood:v.nb?(nbName[v.nb]||''):'',
+        summary:summary||'', selected:s, cardStyle:s?cardSel:cardBase,
+        link:v.url||self._link(v.name,v.zh||''), hasStatus:!!v.status, status:v.status||'', hasDate:!!v.date, date:v.date||'', dateStyle:dateStyle,
+        details:(v.details||[]), hasDetails:!!(v.details&&v.details.length),
+        isNei:false, deleteLabel:'Remove' };
+    }
+    function neiCard(n){ var c=base(Object.assign({cat:'nei'},n),'Neighborhood',n.knownFor); var rr=Object.assign({walk:0,vibe:0,value:0},d.ratings[n.id]||{});
+      return Object.assign(c,{ isNei:true, tokyo:n.tokyo, mrt:n.mrt, walkDots:self._dots(n.id,'walk',rr.walk), vibeDots:self._dots(n.id,'vibe',rr.vibe), valueDots:self._dots(n.id,'value',rr.value), deleteLabel:'Remove this neighborhood' }); }
+    function spotCard(v){ var tag=(v.cat==='music'?(self.MTYPE[v.type]||'Venue'):(v.cat==='meetup'?'Meetup':((self.CAT[v.cat]||{}).label||''))); var c=base(v,tag,v.about); return Object.assign(c,{ deleteLabel:(v.cat==='meetup'?'Remove this meetup':'Remove this place') }); }
+    var items=[];
+    if(at==='nei'){
+      items=this.NEI.filter((n)=>notDel(n.id)).map(neiCard);
+    } else if(at==='all'){
+      items=items.concat(this.SPOTS.filter((s2)=>s2.cat==='home'&&notDel(s2.id)).map(spotCard));
+      items=items.concat(this.NEI.filter((n)=>notDel(n.id)).map(neiCard));
+      ['electronics','coworking','shopping','music','gallery','meetup'].forEach((cc)=>{ items=items.concat(self.SPOTS.filter((s2)=>s2.cat===cc&&notDel(s2.id)).map(spotCard)); });
+    } else {
+      items=this.SPOTS.filter((s2)=>s2.cat===at&&notDel(s2.id)).map(spotCard);
+    }
+
+    var LEGEND_ORDER=[['home','Home'],['nei','Neighborhood'],['electronics','Electronics'],['shopping','Shopping'],['coworking','Coworking'],['music','Music'],['gallery','Galleries'],['meetup','Meetups'],['anchor','Transit']];
+    var legendBase=LEGEND_ORDER.map((t)=>({label:t[1], color:(self.CAT[t[0]]||{}).color||'#8e8c84', cat:t[0]}));
+    legendBase.push({label:'MRT lines',cat:'mrt',line:true});
+    legendBase.push({label:'Labels',cat:'labels',flag:true});
+    var legend=legendBase.map((l)=>{ var on=(this.state.visible||{})[l.cat]!==false; var dotStyle;
+      if(l.line){ dotStyle='width:16px;height:4px;border-radius:2px;display:inline-block;background:'+(on?'linear-gradient(90deg,#E3002C,#F39800,#008659,#0070BD)':'transparent')+';border:'+(on?'0':'1px solid var(--mutedDim)'); }
+      else if(l.flag){ dotStyle='width:15px;height:10px;border-radius:2px;display:inline-block;background:'+(on?'var(--text)':'transparent')+';border:'+(on?'0':'1px solid var(--mutedDim)'); }
+      else { dotStyle='width:10px;height:10px;border-radius:50%;display:inline-block;background:'+(on?l.color:'transparent')+';border:2px solid '+(on?'#12141a':l.color)+';box-shadow:0 0 0 1px '+l.color; }
+      return Object.assign({},l,{ rowStyle:'display:flex;align-items:center;gap:7px;cursor:pointer;background:none;border:0;padding:2px 0;font:inherit;color:'+(on?'var(--text2)':'var(--mutedDim)'), dotStyle:dotStyle }); });
+
+    var agenda=this._buildAgenda();
+
+    return {
+      tabs:tabs, setTab:this.setTab, toggleCat:this.toggleCat,
+      mapHeight:(this.state.split||60)+'%', topShadow:(this.state.canUp?1:0), bottomShadow:(this.state.canDown?1:0),
+      mainRef:this.mainRef, scrollRef:this.scrollRef, onScroll:this.onScroll, startDrag:this.startDrag,
+      mapRef:this.mapRef,
+      legend:legend,
+      activeLabel:labelOf[at]||(this.CAT[at]||{}).label||'', activeCount:items.length, activeIntro:(this.CAT[at]||{}).intro||'',
+      isEmpty:items.length===0, activeList:items,
+      selectCard:this.selectCard, setRating:this.setRating, deleteById:this.deleteById, downloadICS:this.downloadICS,
+      showIcs:this.state.showIcs, openIcs:this.openIcs, closeIcs:this.closeIcs, stopProp:this.stopProp,
+      icsEventCount:agenda.totalDated, hasRecurring:agenda.recurringItems.length>0, recurringItems:agenda.recurringItems, agendaDays:agenda.agendaDays
+    };
+  }
+}
+</script>
+</body>
+</html>
