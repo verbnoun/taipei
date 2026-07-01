@@ -33,18 +33,29 @@
   .home-star svg{position:relative;z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
   .home-star::before{content:'';position:absolute;width:34px;height:34px;border-radius:50%;background:rgba(214,69,60,.35);z-index:1;animation:homePulse 2.1s ease-out infinite}
   @keyframes homePulse{0%{transform:scale(.55);opacity:.85}70%{transform:scale(1.6);opacity:0}100%{transform:scale(1.6);opacity:0}}
+  .app-shell{height:100vh;height:100dvh}
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  @media (max-width:640px){
+    .app-header{padding:11px 15px !important;gap:10px !important}
+    .app-title{font-size:18px !important}
+    .header-note{display:none !important}
+    .card-grid{grid-template-columns:1fr !important}
+    .map-legend{left:8px !important;right:8px !important;bottom:8px !important;padding:9px 11px !important}
+    .tab-row{padding:10px 12px !important}
+    .content-pad{padding:14px 14px 40px !important}
+  }
+  @media (hover:none){ ::-webkit-scrollbar{width:0;height:0} }
 </style>
 </helmet>
-<div style="height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--text)">
-  <header style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;border-bottom:1px solid var(--border)">
-    <div style="display:flex;align-items:baseline;gap:14px">
-      <h1 style="margin:0;font-size:21px;font-weight:600;letter-spacing:-.015em">Taipei</h1>
-      <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--muted);text-transform:uppercase">台北 · field notes</div>
+<div class="app-shell" style="display:flex;flex-direction:column;background:var(--bg);color:var(--text)">
+  <header class="app-header" style="flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;border-bottom:1px solid var(--border)">
+    <div style="display:flex;align-items:baseline;gap:14px;min-width:0">
+      <h1 class="app-title" style="margin:0;font-size:21px;font-weight:600;letter-spacing:-.015em">Taipei</h1>
+      <div style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;white-space:nowrap">台北 · field notes</div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="font-size:12px;color:var(--muted)">Picking a base for a few months building music hardware</div>
-      <button type="button" onClick="{{ openIcs }}" style="font:500 12px/1 'IBM Plex Sans',sans-serif;padding:8px 13px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer">Preview calendar</button>
-      <button type="button" onClick="{{ downloadICS }}" title="Download galleries, music nights & meetups as a calendar file (Jul 1 – Sep 15)" style="font:500 12px/1 'IBM Plex Sans',sans-serif;display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#14161b;cursor:pointer">⤓ .ics</button>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <div class="header-note" style="font-size:12px;color:var(--muted)">A few months in Taipei, building music hardware</div>
+      <button type="button" onClick="{{ openIcs }}" style="font:500 12px/1 'IBM Plex Sans',sans-serif;padding:8px 13px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer">Calendar</button>
     </div>
   </header>
 
@@ -53,7 +64,7 @@
     <!-- MAP (always open) -->
     <div style="flex:none;height:{{ mapHeight }};min-height:180px;position:relative">
       <div ref="{{ mapRef }}" style="position:absolute;inset:0;background:#0c0d11"></div>
-      <div style="position:absolute;left:14px;bottom:18px;z-index:500;background:rgba(20,22,28,.92);border:1px solid var(--border);border-radius:8px;padding:10px 13px;box-shadow:0 4px 16px rgba(0,0,0,.4)">
+      <div class="map-legend" style="position:absolute;left:14px;bottom:18px;z-index:500;background:rgba(20,22,28,.92);border:1px solid var(--border);border-radius:8px;padding:10px 13px;box-shadow:0 4px 16px rgba(0,0,0,.4)">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;font-size:11px">
           <sc-for list="{{ legend }}" as="l" hint-placeholder-count="10">
             <button type="button" data-cat="{{ l.cat }}" onClick="{{ toggleCat }}" style="{{ l.rowStyle }}"><span style="{{ l.dotStyle }}"></span>{{ l.label }}</button>
@@ -69,7 +80,7 @@
 
     <!-- RIGHT COLUMN -->
     <aside style="flex:1 1 0;min-height:160px;background:var(--panel);display:flex;flex-direction:column">
-      <div style="flex:none;display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border)">
+      <div class="tab-row" style="flex:none;display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border)">
         <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="7">
           <button type="button" data-key="{{ tab.key }}" onClick="{{ setTab }}" style="{{ tab.style }}">{{ tab.label }}</button>
         </sc-for>
@@ -79,7 +90,7 @@
         <div style="position:absolute;left:0;right:0;top:0;height:18px;pointer-events:none;z-index:6;opacity:{{ topShadow }};transition:opacity .15s;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0))"></div>
         <div style="position:absolute;left:0;right:0;bottom:0;height:18px;pointer-events:none;z-index:6;opacity:{{ bottomShadow }};transition:opacity .15s;background:linear-gradient(to top,rgba(0,0,0,.5),rgba(0,0,0,0))"></div>
         <div ref="{{ scrollRef }}" onScroll="{{ onScroll }}" style="height:100%;overflow:auto">
-          <div style="padding:18px 18px 44px">
+          <div class="content-pad" style="padding:18px 18px 44px">
             <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px">
               <span style="font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)">{{ activeLabel }}</span>
               <span style="font:500 11px/1 'IBM Plex Mono',monospace;color:var(--mutedDim)">{{ activeCount }}</span>
@@ -90,7 +101,7 @@
               <div style="font-size:13px;color:var(--muted);padding:8px 0">Nothing here yet.</div>
             </sc-if>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+            <div class="card-grid">
               <sc-for list="{{ activeList }}" as="v" hint-placeholder-count="6">
                 <div id="card-{{ v.id }}" style="{{ v.cardStyle }}">
                   <button type="button" data-id="{{ v.id }}" data-cat="{{ v.cat }}" onClick="{{ selectCard }}" style="display:flex;flex-direction:column;gap:6px;text-align:left;background:none;border:0;padding:0;cursor:pointer;width:100%;color:var(--text)">
@@ -160,10 +171,7 @@
             <div style="font-size:16px;font-weight:600">Calendar preview</div>
             <div style="font-size:12px;color:var(--muted);margin-top:2px">Jul 1 – Sep 15 · {{ icsEventCount }} dated events</div>
           </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button type="button" onClick="{{ downloadICS }}" style="font:500 12px/1 'IBM Plex Sans',sans-serif;padding:8px 12px;border-radius:7px;border:1px solid var(--accent);background:var(--accent);color:#14161b;cursor:pointer">⤓ Download .ics</button>
-            <button type="button" onClick="{{ closeIcs }}" style="width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;line-height:1">×</button>
-          </div>
+          <button type="button" onClick="{{ closeIcs }}" style="flex:none;width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;line-height:1">×</button>
         </div>
         <div style="flex:1;min-height:0;overflow:auto;padding:14px 20px 24px">
           <sc-if value="{{ hasRecurring }}" hint-placeholder-val="{{ false }}">
@@ -217,7 +225,7 @@ class Component extends DCLogic {
       anchor:     {label:'Transit / landmark',  color:'#9C9388', intro:'Reference points for orienting and timing commutes.'}
     };
     this.MTYPE = {club:'Club / electronic', livehouse:'Live house', djbar:'DJ bar', listening:'Listening bar'};
-    this.SPOTS=_d.spots;this.markers = {};
+    this.SPOTS=_d.spots;this.MRT=_d.mrt;this.markers = {};
     this.state = {
       activeTab:'all', selectedId:null, visible:{}, split:60, canUp:false, canDown:true, showIcs:false,
       data:{ ratings:{}, deleted:[] }
@@ -466,252 +474,6 @@ class Component extends DCLogic {
 </script>
 <script id="taipei-data" type="application/json">
 {"nei":[{"id":"daan","name":"Da'an","zh":"大安區","lat":25.0264,"lng":121.5435,"tokyo":"Daikanyama / Nakameguro","mrt":"Red, Green, Brown","known_for":"Leafy and walkable, cafés everywhere, Daan Forest Park. Central and a little pricey — the easy first choice."},{"id":"xinyi","name":"Xinyi","zh":"信義區","lat":25.0335,"lng":121.567,"tokyo":"Roppongi / Marunouchi","mrt":"Red, Blue","known_for":"Taipei 101, malls, offices, nightlife. Modern and glossy; the most expensive area."},{"id":"zhongshan","name":"Zhongshan","zh":"中山區","lat":25.053,"lng":121.521,"tokyo":"Ginza × Omotesando","mrt":"Red, Green, Orange","known_for":"Boutiques on Chifeng St, galleries, hotels, great MRT hub. Stylish and very connected."},{"id":"songshan","name":"Songshan / Minsheng","zh":"松山·民生社區","lat":25.059,"lng":121.56,"tokyo":"Jiyūgaoka","mrt":"Green, Brown nearby","known_for":"Tree-lined Minsheng Community and design-y Fujin St. Calm, residential, quietly cool."},{"id":"zhongzheng","name":"Zhongzheng","zh":"中正區","lat":25.044,"lng":121.518,"tokyo":"Chiyoda","mrt":"Red, Blue, Green, Orange","known_for":"Taipei Main Station, government district, Guang Hua nearby. Unbeatable transit, less personality."},{"id":"datong","name":"Datong / Dadaocheng","zh":"大同·大稻埕","lat":25.056,"lng":121.51,"tokyo":"Kuramae / Yanaka","mrt":"Orange, Red nearby","known_for":"Old town along Dihua St — temples, tea, indie makers. Characterful and noticeably cheaper."},{"id":"wanhua","name":"Wanhua / Ximending","zh":"萬華·西門","lat":25.0421,"lng":121.5074,"tokyo":"Harajuku Takeshita × Asakusa","mrt":"Blue, Green","known_for":"Ximending youth shopping, Longshan Temple, street food. Lively and gritty, older bones."},{"id":"neihu","name":"Neihu","zh":"內湖區","lat":25.0793,"lng":121.5755,"tokyo":"Shinagawa tech belt","mrt":"Brown","known_for":"Neihu Tech Park — hardware, electronics and IT firms cluster here. Suburban and a bit car-dependent."},{"id":"nangang","name":"Nangang","zh":"南港區","lat":25.0539,"lng":121.6066,"tokyo":"Tamachi / Shinagawa","mrt":"Blue, Brown","known_for":"Software Park, HSR hub, biotech and new towers. Emerging but far on the east edge."},{"id":"shilin","name":"Shilin / Tianmu","zh":"士林·天母","lat":25.115,"lng":121.531,"tokyo":"Kichijōji","mrt":"Red","known_for":"Famous night market plus the expat-favored Tianmu. Greener and hillier, farther from the core."}],"spots":[{"id":"home","name":"Home — Chifeng St","zh":"赤峰街71巷26號","cat":"home","nb":"datong","lat":25.0566,"lng":121.5204,"about":"Where you're staying — No. 26, Lane 71, Chifeng Street, Datong (光能里). Right in the Chifeng boutique lanes, a few minutes from Zhongshan and Shuanglian MRT.","status":null,"url":null},{"id":"guanghua","name":"Guang Hua Digital Plaza","zh":"光華商場","cat":"electronics","nb":"zhongzheng","lat":25.0445,"lng":121.5325,"about":"Taipei's Akihabara — six floors of PCs, parts, gadgets and repair stalls, with parts alleys spilling onto Bade Rd behind. Start here.","status":null,"url":null,"details":[{"k":"Hours","v":"Daily ~10am–9pm"},{"k":"Layout","v":"6 floors + parts alleys on Bade Rd behind"},{"k":"Prices","v":"Fixed & posted — little bargaining"},{"k":"MRT","v":"Zhongxiao Xinsheng (Blue/Orange) Exit 1"}]},{"id":"syntrend","name":"Syntrend","zh":"三創生活園區","cat":"electronics","nb":"zhongzheng","lat":25.0438,"lng":121.5332,"about":"Sleek Hon Hai flagship next to Guang Hua — high-end showrooms, gaming, VR, maker gear and events.","status":null,"url":null,"details":[{"k":"Hours","v":"Daily ~11am–9:30pm"},{"k":"What","v":"Showrooms, gaming/VR, events; pricier"},{"k":"Where","v":"Right next to Guang Hua"}]},{"id":"taiyuan","name":"Taiyuan Rd Electronics Market","zh":"太原路電子材料","cat":"electronics","nb":"datong","lat":25.0508,"lng":121.513,"about":"Back-alley components, connectors, tools and wholesale near Taipei Main — the real parts district for hardware builders.","status":null,"url":null,"details":[{"k":"Hours","v":"Roughly Mon–Sat ~9am–6pm; quiet Sun"},{"k":"What","v":"Components, connectors, tools, wholesale"},{"k":"MRT","v":"Daqiaotou (Orange) / Taipei Main"}]},{"id":"chifeng","name":"Chifeng St","zh":"赤峰街","cat":"shopping","nb":"zhongshan","lat":25.0556,"lng":121.5203,"about":"Narrow lanes of indie boutiques, coffee and design shops amid old auto-parts stores — your Cat Street.","status":null,"url":null},{"id":"fujin","name":"Fujin St","zh":"富錦街","cat":"shopping","nb":"songshan","lat":25.0588,"lng":121.5605,"about":"Leafy, low-key designer street — concept stores and cafés. The \"Brooklyn of Taipei\".","status":null,"url":null},{"id":"ximending","name":"Ximending","zh":"西門町","cat":"shopping","nb":"wanhua","lat":25.0421,"lng":121.5074,"about":"Youth fashion, sneakers, streetwear and tattoo shops. Harajuku-Takeshita energy.","status":null,"url":null},{"id":"tta","name":"Taiwan Tech Arena (TTA)","zh":"","cat":"coworking","nb":"songshan","lat":25.051,"lng":121.5505,"about":"Government-backed hub at Taipei Arena focused on hardware / IoT and deep tech, with international accelerator tracks and demo space.","status":null,"url":null,"details":[{"k":"Focus","v":"Hardware / IoT / deep tech; accelerators"},{"k":"Hours","v":"Weekday business hours; events vary"},{"k":"Where","v":"Taipei Arena complex, Songshan"},{"k":"For you","v":"Best first stop for the hardware scene"}]},{"id":"futureward","name":"FutureWard","zh":"","cat":"coworking","nb":"zhongshan","lat":25.07,"lng":121.543,"about":"Maker-leaning coworking space with prototyping resources and frequent startup events; close ties to TTA and the Gold Card community.","status":"Location approximate — confirm the address & hours.","url":null,"details":[{"k":"Type","v":"Maker coworking + prototyping"},{"k":"Note","v":"Confirm current address & hours"}]},{"id":"cic","name":"CIC Taipei","zh":"","cat":"coworking","nb":"xinyi","lat":25.036,"lng":121.565,"about":"Global innovation-campus brand — coworking, labs and a dense startup community with steady programming.","status":"Verify Taipei location & current availability.","url":null,"details":[{"k":"Type","v":"Coworking + labs; dense community"},{"k":"Note","v":"Confirm location & availability"}]},{"id":"startupterrace","name":"Startup Terrace","zh":"林口新創園","cat":"coworking","nb":null,"lat":null,"lng":null,"noMap":true,"about":"Large government startup campus with hardware labs and subsidised space — but out in Linkou, New Taipei.","status":"~40 min west in Linkou — off this map.","url":null,"details":[{"k":"Where","v":"Linkou, New Taipei (~40 min west)"},{"k":"What","v":"Govt campus, hardware labs, subsidised space"}]},{"id":"pawnshop","name":"Pawnshop","zh":"當鋪","cat":"music","nb":"daan","lat":25.0335,"lng":121.5548,"about":"From the Korner team — a 3-room underground spot for techno and leftfield electronic. Berlin-ish, queer-friendly, sound-first (not a big EDM room).","status":null,"url":null,"details":[{"k":"Hours","v":"Fri–Sat, ~11pm til 7–8am"},{"k":"Door","v":"NT$700–1000, cash; bag search; no photos"},{"k":"Sound","v":"Funktion-One · 3 rooms (techno / house / live)"},{"k":"Getting in","v":"B1, 279 Sec.4 Xinyi Rd; taxi home after MRT"},{"k":"Listings","v":"RA + @pawnshop_taipei on IG"}]},{"id":"final","name":"FINAL","zh":"","cat":"music","nb":"daan","lat":25.0336,"lng":121.544,"about":"Deconstructed-club / avant-garde nights — cosplay, fashion, the weirder end of electronic. Closest in spirit to Forestlimit.","status":"Was still active in 2023 — confirm current status & events on IG before heading out.","url":null,"details":[{"k":"Scene","v":"Deconstructed / avant-garde club nights"},{"k":"When","v":"Weekend late; event-driven"},{"k":"Check","v":"IG for lineups before going"}]},{"id":"thewall","name":"The Wall / The Bar","zh":"這牆","cat":"music","nb":"zhongzheng","lat":25.0157,"lng":121.534,"about":"Mainstay Gongguan live house; the adjoining Bar is where indie and electronic crowds mix. Inclusive and unpretentious.","status":null,"url":"https://thewalllivehouse.kktix.cc","details":[{"k":"Type","v":"Live house + adjoining bar"},{"k":"Address","v":"B1, No.200 Sec.4 Roosevelt Rd"},{"k":"Listings","v":"thewalllivehouse.kktix.cc — full dated lineup"},{"k":"MRT","v":"Gongguan (Green), ~5 min walk"}]},{"id":"pipe","name":"PIPE Live Music","zh":"","cat":"music","nb":"zhongzheng","lat":25.0125,"lng":121.521,"about":"Riverside live house hosting DJ and electronic one-offs alongside bands. Roomy and scrappy.","status":null,"url":null,"details":[{"k":"Type","v":"Riverside live house"},{"k":"When","v":"Event nights — check listings"},{"k":"Note","v":"By Guting riverside park"}]},{"id":"revolver","name":"Revolver","zh":"","cat":"music","nb":"zhongzheng","lat":25.033,"lng":121.5185,"about":"Two floors near CKS — bar below, DJs and small live sets upstairs. Long-running, expat-friendly, easy weeknight hang.","status":null,"url":null,"details":[{"k":"Hours","v":"Daily, ~8pm til late"},{"k":"Vibe","v":"Bar below, DJs/live upstairs; low cover"},{"k":"MRT","v":"CKS Memorial / Dongmen"}]},{"id":"waitingroom","name":"Waiting Room","zh":"","cat":"music","nb":"daan","lat":25.0246,"lng":121.529,"about":"Tiny Shida basement for experimental, noise and leftfield bookings. DIY and intimate — very Forestlimit-coded.","status":null,"url":null,"details":[{"k":"Type","v":"Tiny basement — experimental / noise"},{"k":"When","v":"Event nights only — check IG"},{"k":"MRT","v":"Taipower Building / Shida"}]},{"id":"witchhouse","name":"Witch House","zh":"女巫店","cat":"music","nb":"daan","lat":25.0182,"lng":121.5343,"about":"Cozy NTU-area institution for singer-songwriters and quieter experimental sets. Candlelit and low-key.","status":null,"url":null,"details":[{"k":"Type","v":"Café live house, ticketed sets"},{"k":"Scene","v":"Singer-songwriter & quiet experimental"},{"k":"MRT","v":"Gongguan / NTU area"}]},{"id":"aha","name":"AHA Saloon","zh":"","cat":"music","nb":"songshan","lat":25.0515,"lng":121.544,"about":"Vinyl-and-cassette listening bar with lo-fi, soul and ambient on rotation, plus serious cocktails. The posh, conversational end of your taste.","status":null,"url":null,"details":[{"k":"Type","v":"Vinyl listening + cocktail bar"},{"k":"Hours","v":"Evenings; verify days open"},{"k":"Note","v":"Conversation-friendly, not a dancefloor"}]},{"id":"winervlt","name":"WINE RVLT","zh":"台VLT","cat":"music","nb":"zhongshan","lat":25.049,"lng":121.532,"about":"Industrial natural-wine bar on Civic Blvd with a constantly-changing curated playlist. Social, design-y, Tribeca-adjacent.","status":null,"url":null,"details":[{"k":"Type","v":"Natural-wine listening bar"},{"k":"Hours","v":"Evenings; closed some weekdays — verify"},{"k":"Area","v":"Civic Blvd, Zhongshan"}]},{"id":"moxfriday","name":"MOX Friday","zh":"","cat":"meetup","nb":"daan","lat":25.041,"lng":121.545,"about":"SOSV / MOX's long-running ecosystem happy hour — relaxed founder + investor mingling. A reliable first foothold in the scene.","status":"Venue can vary — check the listing.","url":"https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV","details":[{"k":"Format","v":"Evening happy hour, casual"},{"k":"Good for","v":"Meeting founders + investors early on"}]},{"id":"startupgrind","name":"Startup Grind Taipei","zh":"","cat":"meetup","nb":"daan","lat":25.044,"lng":121.54,"about":"Local chapter of the global founder community — monthly fireside talks plus networking. Good for structured intros.","status":"Venue varies by event.","url":"https://www.startupgrind.com/taipei/"},{"id":"techtaipei","name":"TechTaipei","zh":"","cat":"meetup","nb":"daan","lat":25.033,"lng":121.544,"about":"Casual drinks-and-pizza meetup for people working in tech in Taiwan. Low-key, friendly, English-speaking.","status":"Rotating bars (Craft House, Red Room…).","url":"https://techtaipei.com/"},{"id":"tsec","name":"Taiwan Startup Ecosystem Community","zh":"","cat":"meetup","nb":"zhongshan","lat":25.047,"lng":121.532,"about":"Networking events, startup lectures and monthly pitching focused on the Taiwan ecosystem. Active Meetup group.","status":"Venue varies — RSVP on Meetup.","url":"https://www.meetup.com/taiwan-startup-ecosystem-community/"},{"id":"ten","name":"Taiwan Entrepreneurs Network","zh":"","cat":"meetup","nb":"daan","lat":25.038,"lng":121.543,"about":"Casual networking events and workshops open to all — a broad, welcoming entry point to Taipei founders.","status":"Venue varies — RSVP on Meetup.","url":"https://www.meetup.com/Taiwan-Entrepreneurs-Network/"},{"id":"meettaipei","name":"Meet Taipei Startup Festival","zh":"","cat":"meetup","nb":"zhongshan","lat":25.081,"lng":121.523,"about":"Asia's biggest startup festival — hundreds of teams, investors and international founders at the Expo Dome. The one big date to plan around.","status":"Annual; 2025 ran Nov 20–22 at Expo Dome.","url":"https://duckduckgo.com/?q=Meet+Taipei+startup+festival","details":[{"k":"When","v":"Late Nov (2025: Nov 20–22)"},{"k":"Where","v":"Taipei Expo Dome, Yuanshan"},{"k":"Scale","v":"Hundreds of teams + intl investors"}]},{"id":"eachmodern","name":"Each Modern","zh":"亞紀畫廊","cat":"gallery","nb":"daan","lat":25.0335,"lng":121.538,"about":"Refined Da'an gallery showing Asian and international contemporary alongside rediscovered modern figures — the closest in spirit to ShugoArts. Considered hangs, strong programme.","status":"Pin approximate — confirm address & current show.","url":null,"details":[{"k":"Hours","v":"Tue–Sat ~12–7pm; closed Sun–Mon"},{"k":"Now showing","v":"Antone Könst — \"Subjects\", 13 Jun–25 Jul 2026"},{"k":"Opened","v":"Sat 13 Jun"},{"k":"Roster","v":"Shohei Takasaki, Antone Könst, Xu Jiong"}]},{"id":"projectfulfill","name":"Project Fulfill Art Space","zh":"就在藝術空間","cat":"gallery","nb":"daan","lat":25.0335,"lng":121.544,"about":"Established 2008; tucked off Xinyi Rd, it emphasises site-specific, concept-driven shows by emerging and mid-career artists. Quietly one of the best.","status":null,"url":null,"details":[{"k":"Hours","v":"Tue–Sat ~1–7pm; closed Sun–Mon"},{"k":"Address","v":"Alley 45, Ln 147, Sec 3, Xinyi Rd"},{"k":"MRT","v":"Daan / Zhongxiao Dunhua"}]},{"id":"tkgplus","name":"TKG+","zh":"","cat":"gallery","nb":"neihu","lat":25.0796,"lng":121.576,"about":"The experimental contemporary arm of Tina Keng — ambitious, museum-grade installations and new media by Asian artists. Anchor of the Neihu gallery cluster.","status":null,"url":null,"details":[{"k":"Hours","v":"Tue–Sat 11–6pm; closed Sun–Mon"},{"k":"Now showing","v":"Mit Jai Inn \"CYCLES\" + Enrico Oyama (TKG+ Projects) — both thru 4 Jul 2026"},{"k":"Receptions","v":"Confirmed pattern: Saturdays 4:30pm"},{"k":"Next","v":"Autumn show opens late Aug (TBA) — Tina Keng Su Meng-Hung runs thru 10 Jul"}]},{"id":"doublesquare","name":"Double Square Gallery","zh":"双方藝廊","cat":"gallery","nb":"neihu","lat":25.0808,"lng":121.5535,"about":"Two-room space for multidisciplinary, concept-driven shows by Taiwanese and international contemporary artists. Curator-minded and ambitious.","status":"Pin approximate — confirm address.","url":null,"details":[{"k":"Hours","v":"Tue–Sat ~11–6:30pm; closed Sun–Mon"},{"k":"Focus","v":"Concept-driven contemporary"},{"k":"Area","v":"Dazhi / Zhongshan edge"}]},{"id":"bluerider","name":"Bluerider ART","zh":"","cat":"gallery","nb":"daan","lat":25.0382,"lng":121.5535,"about":"Polished commercial gallery (est. 2013) focused on Western contemporary art in Asia — rare here. Main space on Dunhua S Rd, plus Ren'ai halls.","status":null,"url":null,"details":[{"k":"Hours","v":"Tue–Sun 10–6:30pm; closed Mon"},{"k":"Main space","v":"1F, No.77 Sec.2 Dunhua S Rd, Da'an"},{"k":"Now showing","v":"Current show 23 May–19 Jul 2026"},{"k":"Openings","v":"Fri press preview + Sat reception 2:30–6pm"}]},{"id":"chiwen","name":"Chi-Wen Gallery","zh":"其玟畫廊","cat":"gallery","nb":"shilin","lat":25.0955,"lng":121.526,"about":"Leading voice for video, photography and new-media art — championed Yuan Goang-Ming and a generation of experimental Taiwanese artists.","status":"By appointment / pin approximate — confirm before visiting.","url":null,"details":[{"k":"Hours","v":"Often by appointment — email ahead"},{"k":"Focus","v":"Video, photography, new media"},{"k":"Area","v":"Shilin"}]},{"id":"eslitegallery","name":"Eslite Gallery","zh":"誠品畫廊","cat":"gallery","nb":"songshan","lat":25.044,"lng":121.5608,"about":"Taiwan's first contemporary gallery (1989) — a heavyweight showing major Chinese and intl artists (Cai Guo-Qiang, Liu Xiaodong, Xu Bing). Reliable, well-produced shows.","status":null,"url":null,"details":[{"k":"Hours","v":"Tue–Sat 11–7pm; closed Sun–Mon"},{"k":"Address","v":"B1, No.88 Yanchang Rd, Songshan"},{"k":"Note","v":"By Songshan Cultural & Creative Park"}]},{"id":"whitestone","name":"Whitestone Gallery","zh":"白石畫廊","cat":"gallery","nb":"neihu","lat":25.0802,"lng":121.5762,"about":"Tokyo gallery (est. 1967) with a striking cypress-wood Kuma-designed Taipei space in Neihu. Shows Japanese and Asian contemporary — a natural fit if you like the Tokyo blue-chips.","status":"Pin approximate — confirm address.","url":null,"details":[{"k":"Hours","v":"Tue–Sun 11–7pm; closed Mon"},{"k":"Now showing","v":"Karen Shiozawa — \"Emerald Ocean\", 13 Jun–18 Jul 2026"},{"k":"Area","v":"Neihu, near the TKG cluster"}]},{"id":"mainsta","name":"Taipei Main","zh":"台北車站","cat":"anchor","nb":"zhongzheng","lat":25.0478,"lng":121.517,"about":"The central transit knot — MRT, TRA and HSR all meet here.","status":null,"url":null},{"id":"t101","name":"Taipei 101","zh":"台北101","cat":"anchor","nb":"xinyi","lat":25.0339,"lng":121.5645,"about":"The landmark and Xinyi anchor — useful reference for the east side.","status":null,"url":null},{"id":"digilog","name":"DigiLog 聲響實驗室","zh":"聲響實驗室","cat":"electronics","nb":"zhongzheng","lat":25.0193,"lng":121.5305,"about":"THE hub for the synth/modular scene — sells synths & Eurorack (Instruò, Expert Sleepers…), audio gear, and runs electronic-music courses/workshops. Best first stop for a hardware builder; ask about meetups.","status":"lead","url":"https://digilog.tw/lab","details":[{"k":"Hours","v":"Mon–Sat 11:00–18:30 (closed Sun)"},{"k":"Also","v":"Runs workshops/classes — check digilog.kktix.cc"}]},{"id":"clab","name":"C-LAB / Taiwan Sound Lab","zh":"臺灣聲響實驗室","cat":"gallery","nb":"daan","lat":25.0332,"lng":121.5363,"about":"State-backed culture lab on a former Air Force HQ; home of Taiwan Sound Lab (IRCAM-built multichannel dome). Hosts Diversonics festival, SIGNAL+ camps, frequent experimental/electroacoustic performances. The key sound-art venue to monitor.","status":"lead","url":"https://clab.org.tw/en/unit/soundlabtw/","details":[{"k":"Now on","v":"IRCAM Sound Off — sound-art exhibitions (Taiwan Sound Lab / IRCAM), through Sep 30"},{"k":"Also on","v":"WE Are Becoming (2026 annual exhibition, 9 countries + performances) — to Aug 16"}]},{"id":"openlab","name":"OpenLab.Taipei","zh":null,"cat":"coworking","nb":"zhongzheng","lat":25.01,"lng":121.534,"about":"Taiwan’s original (2009) hacker/maker space at Treasure Hill Artist Village — open-source hardware, electronics, sound-art crowd. Closest cultural fit for a synth builder. Contact via FB group.","status":"lead","url":"https://www.facebook.com/groups/openlab.taipei/"},{"id":"thecube","name":"TheCube Project Space","zh":"立方計劃空間","cat":"gallery","nb":"zhongzheng","lat":25.0148,"lng":121.5343,"about":"Leading independent space for sound culture & experimental art (co-founded by Amy Cheng and sound-culture researcher Jeph Lo). Exhibitions, talks, sound projects. Wed–Sun 14:00–20:00.","status":"lead","url":"https://thecubespace.com/en/thecube-project-space/","details":[{"k":"Hours","v":"Wed–Sun 14:00–20:00"},{"k":"Summer break","v":"Closed Jul 6–31 (installation); reopens Aug 1–16 with LEE KAN KYO “The Last CD” (~300 hand-painted CD covers)"}]},{"id":"chaobar","name":"潮電 ChaoBar Record Store","zh":"潮電","cat":"music","nb":"zhongzheng","lat":null,"lng":null,"noMap":true,"about":"Historic Taipower Building reimagined as an electronic-music hub: curated Berlin/Tokyo vinyl, guest record picks for in-house DJs, books, themed menu, intimate sets & vinyl parties. Verify hours via IG before going.","status":"lead","url":"https://www.instagram.com/chaobarrecordstore","details":[{"k":"Hours","v":"Trial: Wed/Sat/Sun 15:00–20:00 — verify on IG"}]},{"id":"tfam","name":"Taipei Fine Arts Museum (TFAM)","zh":"臺北市立美術館","cat":"gallery","nb":"zhongshan","lat":25.0725,"lng":121.5248,"about":"Flagship contemporary/modern art museum. Now on: “Entanglement: The Rhythm of Being” (immersive AV, Chou Tung-Yen) to Sep 20; “Surrealism: Worlds in Dialogue” (Ernst/Dalí/Lynch) to Aug 30. Heads-up: Ryuichi Sakamoto “seeing sound, hearing time” opens Oct 31 (after the stay).","status":"lead","url":"https://www.tfam.museum/","details":[{"k":"Hours","v":"Tue–Sun 09:30–17:30 (Sat to 20:30; closed Mon)"}]},{"id":"moca","name":"MoCA Taipei (Museum of Contemporary Art)","zh":"臺北當代藝術館","cat":"gallery","nb":"datong","lat":25.051,"lng":121.519,"about":"Dedicated contemporary-art museum. Now on: “Young Folks: The World as an Aesthetic Membrane” and “The Prisoner’s Dilemma of Memory”, both to Aug 30.","status":"lead","url":"https://www.mocataipei.org.tw/en","details":[{"k":"Hours","v":"Tue–Sun 10:00–18:00 (closed Mon)"},{"k":"Now on","v":"Young Folks + The Prisoner’s Dilemma of Memory — both to Aug 30"}]},{"id":"dac","name":"Digital Art Center, Taipei (DAC)","zh":"臺北數位藝術中心","cat":"gallery","nb":"shilin","lat":25.098,"lng":121.525,"about":"Digital/media & sound art center — exhibitions, the Taipei Digital Art Festival, and 20+ forums/workshops yearly (some sound & digital-fabrication). Check calendar for workshops.","status":"lead","url":"https://dac.taipei/en/home"},{"id":"fablabtaipei","name":"Fablab Taipei 台北自造實驗室","zh":"台北自造實驗室","cat":"coworking","nb":"zhongshan","lat":25.0705,"lng":121.5205,"about":"Full digital-fabrication lab (laser cutters, 3D printers, CNC) inside CIT — useful for building enclosures/panels for synth hardware. Part of the global Fab Lab network.","status":"lead","url":"https://www.fablabs.io/labs/fablabtaipei"},{"id":"whitewabbit","name":"White Wabbit Records 小白兔唱片","zh":"小白兔唱片","cat":"music","nb":"daan","lat":25.0248,"lng":121.53,"about":"Longstanding (since 2002) indie record shop & label — wide indie/experimental/Japanese stock, occasional in-store shows. A scene node for local music networks and flyers.","status":"lead","url":"https://wwr.com.tw/","details":[{"k":"Note","v":"Record shop + indie label; occasional in-store shows"}]},{"id":"appworks","name":"AppWorks 之初加速器","zh":"之初加速器","cat":"coworking","nb":"xinyi","lat":25.041,"lng":121.565,"about":"Largest founder community in Greater SE Asia (600+ startups, free 24/7 coworking near Taipei City Hall MRT). Regular founder events & Demo Days. AW#33 applications close Jul 19.","status":"lead","url":"https://appworks.tw/accelerator/","details":[{"k":"Access","v":"Free 24/7 coworking for community members; near Taipei City Hall MRT"}]},{"id":"kandala","name":"Kandala Records 旃陀羅唱片","zh":"旃陀羅唱片","cat":"music","nb":null,"lat":null,"lng":null,"noMap":true,"about":"Taipei improv/noise/avant-garde label (since ~2009) documenting the experimental scene and organizing gigs (KRG series). Best channel into the underground noise/improv community.","status":"lead","url":"https://kandalarecords.bandcamp.com/"},{"id":"slippeddisk","name":"Slipped Disk","zh":null,"cat":"music","nb":"daan","lat":null,"lng":null,"noMap":true,"about":"Record store / mini listening bar from the Heaven to Me crew — second-hand electronic records, rare dance gems, global oddities, listening station + local craft beer. Near Da’an Park; verify exact address & hours on socials.","status":"lead","url":"https://mixmag.asia/read/new-taipei-record-store-slipped-disk-opens-this-week-local"},{"id":"wetland","name":"Wetland 濕地","zh":"濕地","cat":"music","nb":"zhongshan","lat":25.0545,"lng":121.5228,"about":"DIY multi-floor venue near Zhongshan MRT hosting experimental/noise/leftfield nights (regular Lacking Sound Fest editions). B1.","status":"lead","url":"https://venue.tw/"}],"events":[{"id":"revolver-brass-bomb-20260701","title":"Brass Bomb Party Vol.3 @ Revolver","loc":"1-2 Sec.1 Roosevelt Rd, Zhongzheng","loc_apple":"No. 1-2, Section 1, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-01","start":"20:00","end":"23:00","cat":"music","desc":"盜魂 Soul Heist + KiKu (CH). Doors 19:30, show 20:00. NT$500 (+1 drink). Hip-hop / brass band / avant-garde jazz / rock.","status":"confirmed","url":"https://www.instagram.com/p/DaM7Mf2Eq4Q/"},{"id":"sappho-tripolar-20260702","title":"Tri-polar Syndrome 爵症 (improv) @ Sappho","loc":"Sappho Live, Linsen N Rd, Zhongshan","loc_apple":"No. 500, Linsen North Road, B1, Zhongshan District, Taipei, Taiwan","date":"2026-07-02","start":"21:00","end":"23:00","cat":"music","desc":"林華勁 / 劉育嘉 / Teemu Mustonen. Improv-leaning jazz trio led by guitarist Lin Hua-chin.","status":"confirmed","url":"https://www.sappholive.com/events/"},{"id":"taipei-tech-mixer-fri","title":"Taipei Tech Mixer & Social","loc":"Bar Root by -1, Anhe Rd, Da’an","loc_apple":"No. 65, Section 1, Anhe Road, Da’an District, Taipei, Taiwan","date":"2026-07-03","start":"19:00","end":"22:00","rrule":"FREQ=WEEKLY;BYDAY=FR;UNTIL=20260930T235900Z","cadenceLabel":"Every Friday, 7pm","cat":"meetup","desc":"English-friendly weekly after-work Tech/AI/Data mixer. Low-pressure way to meet founders & tech workers. Confirm each week on Eventbrite.","status":"confirmed","url":"https://www.eventbrite.com/o/taipei-tech-social-121251131918"},{"id":"wall-0","title":"The Wall: NO STAGE NO WALLS","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-04","start":"19:00","cat":"music","desc":"Indie / punk / disco bill. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"},{"id":"wall-1","title":"The Wall: 肉聲菩薩 (noise / experimental)","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-05","start":"19:30","cat":"music","desc":"Wall-of-sound noise night — the loud, leftfield end. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"},{"id":"wall-2","title":"The Wall: Malpaca 羊駝小姐 — \"Now… What?\"","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-11","start":"20:00","cat":"music","desc":"First headline show. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"},{"id":"lsf-145-20260718","title":"失聲祭 LSF #145 (experimental / noise)","loc":"Wetland 濕地 B1, Zhongshan","loc_apple":"No. 10, Lane 107, Linsen North Road, Zhongshan District, Taipei, Taiwan","date":"2026-07-18","start":"19:00","end":"21:30","cat":"music","desc":"Eric Wong (DE) · 賴宗昀 L.T.Y. × 楊雨樵 · Betty Apple. Presale NT$450 / door NT$500. Taiwan’s flagship experimental/noise series — and a chance to catch Betty Apple live.","status":"confirmed","url":"https://www.threads.com/@lackingsoundfest"},{"id":"witchhouse-skipskip-20260724","title":"skip skip ben ben @ Witch House","loc":"Witch House 女巫店, Da’an","loc_apple":"No. 7, Lane 56, Section 3, Xinsheng South Road, Da’an District, Taipei, Taiwan","date":"2026-07-24","start":"19:30","end":"22:00","cat":"music","desc":"Long-running Taiwanese lo-fi / experimental artist. Official Witch House schedule.","status":"confirmed","url":"https://www.witchhouse.org/performance"},{"id":"legacy-youyutong-20260724","title":"游宇潼《天才在左 瘋子在右》讚聲演唱會 @ Legacy","loc":"Legacy Taipei (Huashan 1914)","loc_apple":"No. 1, Section 1, Bade Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-24","start":"20:00","end":"22:30","cat":"music","desc":"Pop/rock headline at Legacy (Huashan 1914, Bldg 中5A). Showtime approx — verify on Legacy program page.","status":"confirmed","url":"https://www.legacy.com.tw/page/programlist/"},{"id":"pipe-between-20260725","title":"雙聲道 BETWEEN @ PIPE","loc":"PIPE Live Music, Zhongzheng","loc_apple":"No. 2, Shui Yuan Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-25","start":"19:10","end":"22:30","cat":"music","desc":"upright磊落 / 範例三 / 韓森 — experimental / electronic bill at the water-tank venue.","status":"confirmed","url":"https://pipelivemusic.com/events/"},{"id":"witchhouse-goatak-20260725","title":"王謙 Goatak @ Witch House","loc":"Witch House 女巫店, Da’an","loc_apple":"No. 7, Lane 56, Section 3, Xinsheng South Road, Da’an District, Taipei, Taiwan","date":"2026-07-25","start":"19:30","end":"22:00","cat":"music","desc":"Electronic / experimental producer. Official Witch House schedule.","status":"confirmed","url":"https://www.witchhouse.org/performance"},{"id":"wall-3","title":"The Wall: 黃澤森 — 陰森童話故事集","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-26","start":"20:00","cat":"music","desc":"Solo return after three years. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"},{"id":"wall-4","title":"The Wall: Friko (US) Live in Taipei","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-07-30","start":"20:00","cat":"music","desc":"Chicago alt / post-punk — buzzy international booking. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"},{"id":"coscup-2026","title":"COSCUP 2026 × UbuCon Asia (open source)","loc":"NTUST (台灣科技大學), Da’an","loc_apple":"No. 43, Section 4, Keelung Road, Da’an District, Taipei, Taiwan","date":"2026-08-08","allDay":true,"cat":"meetup","desc":"Asia’s largest open-source conference (Aug 8–9), 3,000+ developers, makers and community leaders. Free, volunteer-run — strong for meeting the open-hardware crowd.","status":"confirmed","url":"https://coscup.org/2026/en/"},{"id":"wall-5","title":"The Wall: MILLI — JAA EHH! Asia Tour","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-08-09","start":"19:00","cat":"music","desc":"Thai rapper, Coachella alum. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"},{"id":"wall-6","title":"The Wall: DENGARYU 田我流 (JP hip-hop)","loc":"The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan","loc_apple":"No. 200, Section 4, Roosevelt Road, Zhongzheng District, Taipei, Taiwan","date":"2026-08-15","start":"20:00","cat":"music","desc":"stillichimiya-affiliated Japanese hip-hop. Tickets: thewalllivehouse.kktix.cc","status":"confirmed"}],"mrt":[{"name":"Red","color":"#E3002C","pts":[[25.0931,121.526],[25.0852,121.5254],[25.0712,121.5197],[25.0625,121.5197],[25.0578,121.5208],[25.0525,121.5203],[25.0478,121.517],[25.0432,121.5158],[25.0327,121.5183],[25.0337,121.5283],[25.0334,121.5347],[25.0334,121.5436],[25.033,121.553],[25.0339,121.5645],[25.0327,121.5705]]},{"name":"Green","color":"#008659","pts":[[25.05,121.5777],[25.0515,121.556],[25.052,121.544],[25.0524,121.5333],[25.0525,121.5203],[25.049,121.5108],[25.0421,121.508],[25.0353,121.5103],[25.0327,121.5183],[25.0263,121.5229],[25.0205,121.5273],[25.0147,121.5343]]},{"name":"Blue","color":"#0070BD","pts":[[25.0354,121.4999],[25.0421,121.508],[25.0466,121.517],[25.0447,121.5246],[25.0423,121.5331],[25.0417,121.5437],[25.0415,121.5508],[25.0411,121.5601],[25.041,121.5677],[25.0408,121.5762],[25.0447,121.583],[25.0506,121.5932],[25.0539,121.6066],[25.0553,121.6175]]},{"name":"Orange","color":"#F39800","pts":[[25.0633,121.5118],[25.0625,121.5197],[25.0593,121.5337],[25.0524,121.5333],[25.0423,121.5331],[25.0337,121.5283],[25.0263,121.5229],[25.0128,121.5135]]},{"name":"Brown","color":"#B57A2F","pts":[[25.0247,121.5538],[25.0263,121.544],[25.0334,121.5436],[25.0417,121.5437],[25.052,121.544],[25.0608,121.534],[25.0635,121.5519],[25.0788,121.578],[25.0838,121.5942],[25.07,121.614],[25.0598,121.6155],[25.0553,121.6175]]}]}
-</script>
-</body>
-</html>this.MRT=_d.mrt;
-    var del=this.state.data.deleted||[];
-    this.NEI.forEach((n)=>{
-      if(del.indexOf(n.id)>=0) return;
-      var m=L.circleMarker([n.lat,n.lng],this._circle('#2F6FB0',true,false)).addTo(map);
-      m.bindTooltip(n.name,{permanent:true,direction:'right',offset:[9,0],className:'nb'});
-      m.on('click',()=>this._select(n.id,'nei'));
-      this.markers[n.id]={layer:m,color:'#2F6FB0',big:true,cat:'nei'}; group.push(m);
-    });
-    this.SPOTS.forEach((s)=>{
-      if(s.noMap||del.indexOf(s.id)>=0) return;
-      var c=(this.CAT[s.cat]||{}).color||'#9C9388';
-      if(s.cat==='home'){
-        var hm=L.marker([s.lat,s.lng],{icon:this._homeIcon(),zIndexOffset:1000}).addTo(map);
-        hm.bindTooltip(s.name,{permanent:true,direction:'top',offset:[0,-16],className:'sp'});
-        hm.on('click',()=>this._select(s.id,s.cat));
-        this.markers[s.id]={layer:hm,color:c,big:true,cat:'home',isHome:true}; group.push(hm); return;
-      }
-      var m=L.circleMarker([s.lat,s.lng],this._circle(c,false,false)).addTo(map);
-      m.bindTooltip(s.name,{permanent:true,direction:'top',className:'sp'});
-      if(s.cat!=='anchor') m.on('click',()=>this._select(s.id,s.cat));
-      this.markers[s.id]={layer:m,color:c,big:false,cat:s.cat}; group.push(m);
-    });
-    var mrtItems=[];
-    this.MRT.forEach((ln)=>{
-      mrtItems.push(L.polyline(ln.pts,{color:ln.color,weight:3,opacity:.75,lineJoin:'round',lineCap:'round',interactive:false}));
-      ln.pts.forEach((p)=>{ mrtItems.push(L.circleMarker(p,{radius:2.8,color:ln.color,weight:1.6,fillColor:'#ffffff',fillOpacity:1,interactive:false})); });
-    });
-    this.mrtLayer=L.layerGroup(mrtItems);
-    try{ var g=L.featureGroup(group); map.fitBounds(g.getBounds().pad(0.10),{maxZoom:13}); }catch(e){}
-    setTimeout(()=>map.invalidateSize(),80);
-    if(window.ResizeObserver){ try{ this._ro=new ResizeObserver(()=>{ if(this.map) this.map.invalidateSize(); }); this._ro.observe(this.mapEl); }catch(e){} }
-    this._highlight();
-    this._applyVisibility();
-  }
-  _circle(color,big,sel){ return {radius: big?(sel?11:9):(sel?9:6), color: sel?'#0e0f13':'#12141a', weight: sel?3:2, fillColor:color, fillOpacity:1}; }
-  _homeIcon(){ return L.divIcon({className:'home-div', iconSize:[42,42], iconAnchor:[21,21], html:'<div class="home-star"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01z" fill="#D6453C" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>'}); }
-  _applyVisibility(){
-    if(!this.map) return;
-    var vis=this.state.visible||{};
-    Object.keys(this.markers).forEach((id)=>{
-      var e=this.markers[id], on=vis[e.cat]!==false;
-      if(on && !this.map.hasLayer(e.layer)) e.layer.addTo(this.map);
-      else if(!on && this.map.hasLayer(e.layer)) this.map.removeLayer(e.layer);
-    });
-    if(this.mrtLayer){ var mon=vis.mrt!==false; if(mon){ if(!this.map.hasLayer(this.mrtLayer)){ this.mrtLayer.addTo(this.map); this.mrtLayer.eachLayer((l)=>{ if((l instanceof L.CircleMarker)&&l.bringToBack) l.bringToBack(); }); this.mrtLayer.eachLayer((l)=>{ if((l instanceof L.Polyline)&&!(l instanceof L.CircleMarker)&&l.bringToBack) l.bringToBack(); }); } } else if(this.map.hasLayer(this.mrtLayer)) this.map.removeLayer(this.mrtLayer); }
-    var tp=this.map.getPane&&this.map.getPane('tooltipPane'); if(tp) tp.style.display=(vis.labels===false)?'none':'';
-  }
-  _highlight(){
-    Object.keys(this.markers).forEach((id)=>{
-      var e=this.markers[id], sel=(id===this.state.selectedId);
-      if(e.isHome){ if(e.layer.setZIndexOffset) e.layer.setZIndexOffset(sel?1100:1000); return; }
-      var st=this._circle(e.color,e.big,sel);
-      e.layer.setStyle({color:st.color,weight:st.weight,fillColor:st.fillColor,fillOpacity:st.fillOpacity});
-      e.layer.setRadius(st.radius);
-      if(sel) e.layer.bringToFront();
-    });
-  }
-  componentDidUpdate(prevProps,prevState){
-    if(!this.map) return;
-    prevProps=prevProps||{}; prevState=prevState||{};
-    if(prevProps.mapTheme!==this.props.mapTheme && this._tiles) this._tiles.setUrl(this._tileUrl());
-    if(prevState.selectedId!==this.state.selectedId){ this._highlight(); if(this.state.selectedId) setTimeout(()=>this._scrollToCard(this.state.selectedId),60); }
-    if(prevState.visible!==this.state.visible) this._applyVisibility();
-    if(prevState.activeTab!==this.state.activeTab||prevState.selectedId!==this.state.selectedId) setTimeout(()=>this._updShadow(),0);
-  }
-
-  _update(fn){ this.setState((s)=>{ var d=JSON.parse(JSON.stringify(s.data)); fn(d); try{ localStorage.setItem('taipei-app-v1',JSON.stringify(d)); }catch(e){} return {data:d}; }); }
-  _select(id,cat){ this.setState((s)=>{ var nt=(s.activeTab==='all'||s.activeTab===cat)?s.activeTab:(cat||s.activeTab); return {selectedId:id, activeTab:nt}; }); }
-  _filterCats(){ return ['nei','electronics','coworking','shopping','music','gallery','meetup','anchor']; }
-  _byId(id){ return this.NEI.find((x)=>x.id===id)||this.SPOTS.find((x)=>x.id===id); }
-  _dots(nid,dim,val){ return [1,2,3,4,5].map((v)=>({nid:nid,dim:dim,val:v, style:'width:13px;height:13px;border:0;border-radius:50%;cursor:pointer;padding:0;background:'+(v<=val?'#2F6FB0':'#3a3f4c')})); }
-  _link(name,zh){ return 'https://duckduckgo.com/?q='+encodeURIComponent(name+' Taipei '+(zh||'')); }
-  _scrollToCard(id){ var sc=this.scrollEl; if(!sc) return; var el=document.getElementById('card-'+id); if(!el) return; var er=el.getBoundingClientRect(), sr=sc.getBoundingClientRect(); sc.scrollTop += (er.top - sr.top) - 14; }
-  _rgba(hex,a){ hex=String(hex||'#000000').replace('#',''); if(hex.length===3) hex=hex.split('').map((c)=>c+c).join(''); var r=parseInt(hex.substr(0,2),16),g=parseInt(hex.substr(2,2),16),b=parseInt(hex.substr(4,2),16); return 'rgba('+r+','+g+','+b+','+a+')'; }
-  _fmtTime(t){ if(!t) return ''; var parts=t.split(':'); var h=parseInt(parts[0],10); var m=parts[1]; var ap=h>=12?'PM':'AM'; var h12=h%12; if(h12===0) h12=12; return h12+':'+m+' '+ap; }
-  _fmtDay(dateStr){ var dt=new Date(dateStr+'T00:00:00'); var wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()]; var mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()]; return wd+', '+mo+' '+dt.getDate(); }
-
-  setTab=(e)=>{ var key=e.currentTarget.dataset.key; this.setState((s)=>{ var cur=s.visible||{}; var v={mrt:cur.mrt, labels:cur.labels, home:cur.home}; if(key!=='all'){ this._filterCats().forEach((c)=>{ v[c]=(c===key); }); } return {activeTab:key, selectedId:null, visible:v}; }); };
-  selectCard=(e)=>{ var id=e.currentTarget.dataset.id; this.setState((s)=>({selectedId: s.selectedId===id?null:id}),()=>{ var it=this._byId(id); if(this.state.selectedId===id && this.map && it && it.lat && !it.noMap){ this.map.setView([it.lat,it.lng],14,{animate:true}); } }); };
-  toggleCat=(e)=>{ var cat=e.currentTarget.dataset.cat; this.setState((s)=>{ var v=Object.assign({},s.visible); v[cat]=v[cat]===false?true:false; return {visible:v}; }); };
-  mainRef=(el)=>{ this.mainEl=el; };
-  mapRef=(el)=>{ this.mapEl=el; };
-  _scrollHandler=()=>{ this._updShadow(); };
-  scrollRef=(el)=>{ if(this.scrollEl===el) return; if(this.scrollEl) this.scrollEl.removeEventListener('scroll',this._scrollHandler); this.scrollEl=el; if(el){ el.addEventListener('scroll',this._scrollHandler,{passive:true}); setTimeout(()=>this._updShadow(),0); } };
-  onScroll=()=>{ this._updShadow(); };
-  _updShadow(){ var el=this.scrollEl; if(!el) return; var canUp=el.scrollTop>2; var canDown=(el.scrollTop+el.clientHeight)<(el.scrollHeight-2); if(canUp!==this.state.canUp||canDown!==this.state.canDown) this.setState({canUp:canUp,canDown:canDown}); }
-  startDrag=(e)=>{ e.preventDefault(); this._drag=true; document.addEventListener('pointermove',this._move); document.addEventListener('pointerup',this._end); document.body.style.userSelect='none'; document.body.style.cursor='row-resize'; };
-  _move=(e)=>{ if(!this._drag||!this.mainEl) return; var r=this.mainEl.getBoundingClientRect(); var mapPx=e.clientY-r.top; mapPx=Math.max(180,Math.min(r.height-160,mapPx)); this.setState({split:(mapPx/r.height*100)}); if(this.map) this.map.invalidateSize(); this._updShadow(); };
-  _end=()=>{ if(!this._drag) return; this._drag=false; document.removeEventListener('pointermove',this._move); document.removeEventListener('pointerup',this._end); document.body.style.userSelect=''; document.body.style.cursor=''; try{ localStorage.setItem('taipei-split',String(this.state.split)); }catch(e){} };
-  setRating=(e)=>{ var ds=e.currentTarget.dataset, nid=ds.nid, dim=ds.dim, val=+ds.val; this._update((d)=>{ var r=Object.assign({walk:0,vibe:0,value:0},d.ratings[nid]||{}); r[dim]=(r[dim]===val?0:val); d.ratings[nid]=r; }); };
-  deleteById=(e)=>{ var id=e.currentTarget.dataset.id; if(this.markers[id]){ this.map.removeLayer(this.markers[id].layer); delete this.markers[id]; } this._update((d)=>{ d.deleted=(d.deleted||[]).concat([id]); }); this.setState({selectedId:null}); };
-  openIcs=()=>{ this.setState({showIcs:true}); };
-  closeIcs=()=>{ this.setState({showIcs:false}); };
-  stopProp=(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); };
-
-  _seedEvents(){
-    var mox='https://duckduckgo.com/?q=MOX+Friday+happy+hour+Taipei+SOSV';
-    var E=[];
-    [['2026-07-03'],['2026-08-07'],['2026-09-04']].forEach(function(x){ E.push({id:'mox-'+x[0], title:'MOX Friday — founder + investor happy hour', loc:'Taipei (venue varies — check listing)', date:x[0], start:'19:00', end:'21:00', cat:'meetup', desc:'SOSV/MOX ecosystem happy hour. Confirm venue: '+mox}); });
-    [['Startup Grind Taipei','2026-07-15'],['Startup Grind Taipei','2026-08-19'],['Startup Grind Taipei','2026-09-09'],['Taiwan Startup Ecosystem Community','2026-07-22'],['Taiwan Startup Ecosystem Community','2026-08-26'],['Taiwan Entrepreneurs Network','2026-07-29'],['TechTaipei drinks','2026-08-13']].forEach(function(x,i){ E.push({id:'tent-'+i, title:x[0]+' — TENTATIVE, verify date', loc:'Taipei (RSVP online)', date:x[1], allDay:true, cat:'meetup', desc:'Cadence-based placeholder — confirm the real date before relying on it.'}); });
-    E.push({id:'pawnshop-wk', title:'Pawnshop open — check RA/IG for lineup', loc:'B1, 279 Sec.4 Xinyi Rd, Da\u2019an', date:'2026-07-03', start:'23:00', end:'23:59', cat:'music', cadenceLabel:'Fri & Sat nights, through Sep 15', rrule:'FREQ=WEEKLY;BYDAY=FR,SA;UNTIL=20260915T235900Z', desc:'Techno / leftfield electronic. Lineups posted ~1–2 weeks ahead on Resident Advisor & Instagram.'});
-    var wall='The Wall, B1 No.200 Sec.4 Roosevelt Rd, Gongguan';
-    var wallShows=[
-      ['2026-07-04','19:00','The Wall: NO STAGE NO WALLS','Indie / punk / disco bill.'],
-      ['2026-07-05','19:30','The Wall: 肉聲菩薩 (noise / experimental)','Wall-of-sound noise night — the loud, leftfield end.'],
-      ['2026-07-11','20:00','The Wall: Malpaca 羊駝小姐 — “Now… What?”','First headline show.'],
-      ['2026-07-26','20:00','The Wall: 黃澤森 — 陰森童話故事集','Solo return after three years.'],
-      ['2026-07-30','20:00','The Wall: Friko (US) Live in Taipei','Chicago alt / post-punk — buzzy international booking.'],
-      ['2026-08-09','19:00','The Wall: MILLI — JAA EHH! Asia Tour','Thai rapper, Coachella alum.'],
-      ['2026-08-15','20:00','The Wall: DENGARYU 田我流 (JP hip-hop)','stillichimiya-affiliated Japanese hip-hop.']
-    ];
-    wallShows.forEach(function(s,i){ E.push({id:'wall-'+i, title:s[2], loc:wall, date:s[0], start:s[1], cat:'music', desc:s[3]+' Tickets: thewalllivehouse.kktix.cc'}); });
-    E.push({id:'livehouse-wk', title:'Check live houses for weekend gigs (PIPE · Waiting Room · Witch House)', loc:'Taipei', date:'2026-07-01', allDay:true, cat:'music', cadenceLabel:'Wednesdays, through Sep 15', rrule:'FREQ=WEEKLY;BYDAY=WE;UNTIL=20260915', desc:'These post bookings ~2–4 weeks out — scan for experimental / electronic nights. (The Wall\u2019s lineup is already listed above.)'});
-    E.push({id:'bluerider-close', title:'Bluerider ART — last day: current Dunhua show', loc:'Bluerider ART, No.77 Sec.2 Dunhua S Rd, Da\u2019an', date:'2026-07-19', allDay:true, cat:'gallery', desc:'Confirmed: run 23 May–19 Jul 2026 (Fri press preview + Sat 2:30–6pm reception). Also “Butterflies of Light” @ Breeze Center thru 15 Jul.'});
-    E.push({id:'tkg-cycles-close', title:'TKG+ — last day: Mit Jai Inn “CYCLES”', loc:'TKG+ B1, Ln 548 Ruiguang Rd, Neihu', date:'2026-07-04', allDay:true, cat:'gallery', desc:'Confirmed: 23 May–4 Jul 2026, reception 23 May (Sat) 4:30pm.'});
-    E.push({id:'tkg-oyama-close', title:'TKG+ Projects — last day: Enrico Isamu Oyama “Aerosolic Forms”', loc:'TKG+ Projects 2F, Ln 548 Ruiguang Rd, Neihu', date:'2026-07-04', allDay:true, cat:'gallery', desc:'Confirmed: 14 Mar–4 Jul 2026, reception 14 Mar (Sat) 4:30pm. Aerosol/calligraphic painting, w/ Takuro Someya Contemporary Art.'});
-    E.push({id:'tinakeng-su-close', title:'Tina Keng — last day: Su Meng-Hung “The Flowers of Coromandel”', loc:'Tina Keng Gallery 1F, Ln 548 Ruiguang Rd, Neihu', date:'2026-07-10', allDay:true, cat:'gallery', desc:'Confirmed: opened 8 May 2026 (reception Sat 4:30pm), closes 10–11 Jul. Same Neihu building as TKG+.'});
-    E.push({id:'eachmodern-konst-close', title:'Each Modern — last day: Antone Könst “Subjects”', loc:'Each Modern, Da\u2019an', date:'2026-07-25', allDay:true, cat:'gallery', desc:'Confirmed: 13 Jun–25 Jul 2026 (opened Sat 13 Jun).'});
-    E.push({id:'whitestone-shiozawa-close', title:'Whitestone — last day: Karen Shiozawa “Emerald Ocean”', loc:'Whitestone Gallery, Neihu', date:'2026-07-18', allDay:true, cat:'gallery', desc:'Confirmed: 13 Jun–18 Jul 2026.'});
-    E.push({id:'gallery-neihu-sat', title:'Neihu gallery day — TKG+ / Tina Keng cluster', loc:'Ln 548 Ruiguang Rd, Neihu (one building)', date:'2026-07-04', allDay:true, cat:'gallery', desc:'TKG+, TKG+ Projects and Tina Keng share No.15, Ln 548 Ruiguang Rd. Tue–Sat 11–6. After the 4–10 Jul closings their autumn shows reopen in late Aug (2024: 17 Aug; 2025: 26 Aug) — receptions land on a Saturday 4:30pm. Check tkgplus.com for the dated announcement.'});
-    return E;
-  }
-  _icsEsc(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
-  _icsDay(dateStr){ return (dateStr||'').replace(/-/g,''); }
-  _icsLocal(dateStr,timeStr){ return this._icsDay(dateStr)+'T'+(timeStr||'00:00').replace(':','')+'00'; }
-  _nextDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); d.setDate(d.getDate()+1); return d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2); }
-  _addMin(dateStr,timeStr,mins){ var d=new Date(dateStr+'T'+(timeStr||'00:00')+':00'); d.setMinutes(d.getMinutes()+mins); var p=function(n){return ('0'+n).slice(-2);}; return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T'+p(d.getHours())+p(d.getMinutes())+'00'; }
-  buildICS(){
-    var self=this;
-    var now=new Date(); var p=function(n){return ('0'+n).slice(-2);};
-    var stamp=now.getUTCFullYear()+p(now.getUTCMonth()+1)+p(now.getUTCDate())+'T'+p(now.getUTCHours())+p(now.getUTCMinutes())+p(now.getUTCSeconds())+'Z';
-    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Taipei Field Notes//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Taipei — Jul–Sep','X-WR-TIMEZONE:Asia/Taipei',
-      'BEGIN:VTIMEZONE','TZID:Asia/Taipei','BEGIN:STANDARD','DTSTART:19700101T000000','TZOFFSETFROM:+0800','TZOFFSETTO:+0800','TZNAME:CST','END:STANDARD','END:VTIMEZONE'];
-    var push=function(ev){
-      if(!ev.date) return;
-      L.push('BEGIN:VEVENT');
-      L.push('UID:'+(ev.id||('e'+Math.random().toString(36).slice(2)))+'@taipei-field-notes');
-      L.push('DTSTAMP:'+stamp);
-      L.push('SUMMARY:'+self._icsEsc(ev.title||'(untitled)'));
-      if(ev.loc) L.push('LOCATION:'+self._icsEsc(ev.loc));
-      if(ev.desc) L.push('DESCRIPTION:'+self._icsEsc(ev.desc));
-      if(ev.allDay || !ev.start){
-        L.push('DTSTART;VALUE=DATE:'+self._icsDay(ev.date));
-        L.push('DTEND;VALUE=DATE:'+self._nextDay(ev.date));
-      } else {
-        L.push('DTSTART;TZID=Asia/Taipei:'+self._icsLocal(ev.date,ev.start));
-        L.push('DTEND;TZID=Asia/Taipei:'+(ev.end?self._icsLocal(ev.date,ev.end):self._addMin(ev.date,ev.start,90)));
-      }
-      if(ev.rrule) L.push('RRULE:'+ev.rrule);
-      L.push('END:VEVENT');
-    };
-    this._seedEvents().forEach(push);
-    L.push('END:VCALENDAR');
-    return L.join('\r\n');
-  }
-  downloadICS=()=>{ try{ var s=this.buildICS(); var blob=new Blob([s],{type:'text/calendar;charset=utf-8'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='taipei-jul-sep.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },600); }catch(e){ console.error(e); } };
-
-  _buildAgenda(){
-    var self=this;
-    var seed=this._seedEvents();
-    var dated=seed.filter(function(e){ return !e.rrule && e.date; });
-    var recurringSeed=seed.filter(function(e){ return !!e.rrule; });
-    dated.sort(function(a,b){ var ak=a.date+'T'+(a.start||'00:00'); var bk=b.date+'T'+(b.start||'00:00'); return ak<bk?-1:(ak>bk?1:0); });
-    var byDay={}, order=[];
-    dated.forEach(function(e){
-      if(!byDay[e.date]){ byDay[e.date]=[]; order.push(e.date); }
-      var c=(self.CAT[e.cat]||{}).color||'#8e8c84';
-      var catLabel=(self.CAT[e.cat]||{}).short||(self.CAT[e.cat]||{}).label||'';
-      byDay[e.date].push({ title:e.title, loc:e.loc||'', hasLoc:!!e.loc, timeLabel:(e.allDay||!e.start)?'All day':self._fmtTime(e.start), color:c, catLabel:catLabel });
-    });
-    var agendaDays=order.map(function(dt){ return {label:self._fmtDay(dt), events:byDay[dt]}; });
-    var recurringItems=recurringSeed.map(function(e){ var c=(self.CAT[e.cat]||{}).color||'#8e8c84'; return {title:e.title, cadence:e.cadenceLabel||'Recurring', color:c}; });
-    return {agendaDays:agendaDays, recurringItems:recurringItems, totalDated:dated.length};
-  }
-
-  renderVals(){
-    var d=this.state.data, at=this.state.activeTab, self=this;
-    var sel=this.state.selectedId, selId=sel;
-    var nbName={}; this.NEI.forEach((n)=>{nbName[n.id]=n.name;});
-    var del=d.deleted||[]; var notDel=function(id){return del.indexOf(id)<0;};
-    var TAB=[['all','All'],['nei','Neighborhoods'],['electronics','Electronics'],['coworking','Coworking'],['shopping','Shopping'],['music','Music'],['gallery','Galleries'],['meetup','Meetups']];
-    var labelOf={}; TAB.forEach((t)=>{labelOf[t[0]]=t[1];});
-    var tabs=TAB.map((t)=>{
-      var key=t[0], label=t[1], activeSel=(at===key);
-      if(key==='all'){
-        return {key:key,label:label, style:"font:500 12.5px/1 'IBM Plex Sans',sans-serif;padding:7px 12px;border-radius:7px;cursor:pointer;border:1px solid "+(activeSel?'var(--accent)':'var(--border)')+";background:"+(activeSel?'var(--accent)':'var(--panel2)')+";color:"+(activeSel?'#14161b':'var(--text2)')};
-      }
-      var c=(self.CAT[key]||{}).color||'#8e8c84';
-      return {key:key, label:label, style:"font:500 12.5px/1 'IBM Plex Sans',sans-serif;padding:7px 12px;border-radius:7px;cursor:pointer;border:1px solid "+(activeSel?c:self._rgba(c,0.35))+";background:"+(activeSel?c:self._rgba(c,0.12))+";color:"+(activeSel?'#fff':c)};
-    });
-
-    var cardBase='border:1px solid var(--border);border-radius:11px;background:var(--panel2);padding:14px 15px;display:flex;flex-direction:column';
-    function base(v, tag, summary){
-      var s=(selId===v.id);
-      var catColor=(self.CAT[v.cat]||{}).color||'#2F6FB0';
-      var cardSel='border:1.5px solid '+catColor+';border-radius:11px;background:'+self._rgba(catColor,0.10)+';padding:13.5px 14.5px;display:flex;flex-direction:column;box-shadow:0 0 0 3px '+self._rgba(catColor,0.18);
-      var dateStyle='font:500 11px/1 "IBM Plex Sans",sans-serif;color:'+catColor+';background:'+self._rgba(catColor,0.16)+';align-self:flex-start;padding:5px 9px;border-radius:6px;display:inline-block;margin-top:9px;width:fit-content';
-      return { id:v.id, cat:v.cat, name:v.name, zh:v.zh||'', hasZh:!!v.zh, tag:tag, neighborhood:v.nb?(nbName[v.nb]||''):'',
-        summary:summary||'', selected:s, cardStyle:s?cardSel:cardBase,
-        link:v.url||self._link(v.name,v.zh||''), hasStatus:!!v.status, status:v.status||'', hasDate:!!v.date, date:v.date||'', dateStyle:dateStyle,
-        details:(v.details||[]), hasDetails:!!(v.details&&v.details.length),
-        isNei:false, deleteLabel:'Remove' };
-    }
-    function neiCard(n){ var c=base(Object.assign({cat:'nei'},n),'Neighborhood',n.knownFor); var rr=Object.assign({walk:0,vibe:0,value:0},d.ratings[n.id]||{});
-      return Object.assign(c,{ isNei:true, tokyo:n.tokyo, mrt:n.mrt, walkDots:self._dots(n.id,'walk',rr.walk), vibeDots:self._dots(n.id,'vibe',rr.vibe), valueDots:self._dots(n.id,'value',rr.value), deleteLabel:'Remove this neighborhood' }); }
-    function spotCard(v){ var tag=(v.cat==='music'?(self.MTYPE[v.type]||'Venue'):(v.cat==='meetup'?'Meetup':((self.CAT[v.cat]||{}).label||''))); var c=base(v,tag,v.about); return Object.assign(c,{ deleteLabel:(v.cat==='meetup'?'Remove this meetup':'Remove this place') }); }
-    var items=[];
-    if(at==='nei'){
-      items=this.NEI.filter((n)=>notDel(n.id)).map(neiCard);
-    } else if(at==='all'){
-      items=items.concat(this.SPOTS.filter((s2)=>s2.cat==='home'&&notDel(s2.id)).map(spotCard));
-      items=items.concat(this.NEI.filter((n)=>notDel(n.id)).map(neiCard));
-      ['electronics','coworking','shopping','music','gallery','meetup'].forEach((cc)=>{ items=items.concat(self.SPOTS.filter((s2)=>s2.cat===cc&&notDel(s2.id)).map(spotCard)); });
-    } else {
-      items=this.SPOTS.filter((s2)=>s2.cat===at&&notDel(s2.id)).map(spotCard);
-    }
-
-    var LEGEND_ORDER=[['home','Home'],['nei','Neighborhood'],['electronics','Electronics'],['shopping','Shopping'],['coworking','Coworking'],['music','Music'],['gallery','Galleries'],['meetup','Meetups'],['anchor','Transit']];
-    var legendBase=LEGEND_ORDER.map((t)=>({label:t[1], color:(self.CAT[t[0]]||{}).color||'#8e8c84', cat:t[0]}));
-    legendBase.push({label:'MRT lines',cat:'mrt',line:true});
-    legendBase.push({label:'Labels',cat:'labels',flag:true});
-    var legend=legendBase.map((l)=>{ var on=(this.state.visible||{})[l.cat]!==false; var dotStyle;
-      if(l.line){ dotStyle='width:16px;height:4px;border-radius:2px;display:inline-block;background:'+(on?'linear-gradient(90deg,#E3002C,#F39800,#008659,#0070BD)':'transparent')+';border:'+(on?'0':'1px solid var(--mutedDim)'); }
-      else if(l.flag){ dotStyle='width:15px;height:10px;border-radius:2px;display:inline-block;background:'+(on?'var(--text)':'transparent')+';border:'+(on?'0':'1px solid var(--mutedDim)'); }
-      else { dotStyle='width:10px;height:10px;border-radius:50%;display:inline-block;background:'+(on?l.color:'transparent')+';border:2px solid '+(on?'#12141a':l.color)+';box-shadow:0 0 0 1px '+l.color; }
-      return Object.assign({},l,{ rowStyle:'display:flex;align-items:center;gap:7px;cursor:pointer;background:none;border:0;padding:2px 0;font:inherit;color:'+(on?'var(--text2)':'var(--mutedDim)'), dotStyle:dotStyle }); });
-
-    var agenda=this._buildAgenda();
-
-    return {
-      tabs:tabs, setTab:this.setTab, toggleCat:this.toggleCat,
-      mapHeight:(this.state.split||60)+'%', topShadow:(this.state.canUp?1:0), bottomShadow:(this.state.canDown?1:0),
-      mainRef:this.mainRef, scrollRef:this.scrollRef, onScroll:this.onScroll, startDrag:this.startDrag,
-      mapRef:this.mapRef,
-      legend:legend,
-      activeLabel:labelOf[at]||(this.CAT[at]||{}).label||'', activeCount:items.length, activeIntro:(this.CAT[at]||{}).intro||'',
-      isEmpty:items.length===0, activeList:items,
-      selectCard:this.selectCard, setRating:this.setRating, deleteById:this.deleteById, downloadICS:this.downloadICS,
-      showIcs:this.state.showIcs, openIcs:this.openIcs, closeIcs:this.closeIcs, stopProp:this.stopProp,
-      icsEventCount:agenda.totalDated, hasRecurring:agenda.recurringItems.length>0, recurringItems:agenda.recurringItems, agendaDays:agenda.agendaDays
-    };
-  }
-}
 </script>
 </body>
 </html>
