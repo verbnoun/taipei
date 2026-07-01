@@ -16,7 +16,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:revolver-brass-bomb-20260701@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:Brass Bomb Party Vol.3 @ Revolver
 LOCATION:No. 1-2\, Section 1\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:盜魂 Soul Heist + KiKu (CH). Doors 19:30\, show 20:00. NT$500 (+1 drink). Hip-hop / brass band / avant-garde jazz / rock.
@@ -25,16 +25,26 @@ DTEND;TZID=Asia/Taipei:20260701T230000
 END:VEVENT
 BEGIN:VEVENT
 UID:sappho-tripolar-20260702@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:Tri-polar Syndrome 爵症 (improv) @ Sappho
-LOCATION:No. 1\, Lane 102\, Section 1\, Anhe Road\, Da’an District\, Taipei\, Taiwan
+LOCATION:No. 500\, Linsen North Road\, B1\, Zhongshan District\, Taipei\, Taiwan
 DESCRIPTION:林華勁 / 劉育嘉 / Teemu Mustonen. Improv-leaning jazz trio led by guitarist Lin Hua-chin.
 DTSTART;TZID=Asia/Taipei:20260702T210000
 DTEND;TZID=Asia/Taipei:20260702T230000
 END:VEVENT
 BEGIN:VEVENT
+UID:taipei-tech-mixer-fri@taipei-field-notes
+DTSTAMP:20260701T084901Z
+SUMMARY:Taipei Tech Mixer & Social
+LOCATION:No. 65\, Section 1\, Anhe Road\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:English-friendly weekly after-work Tech/AI/Data mixer. Low-pressure way to meet founders & tech workers. Confirm each week on Eventbrite.
+DTSTART;TZID=Asia/Taipei:20260703T190000
+DTEND;TZID=Asia/Taipei:20260703T220000
+RRULE:FREQ=WEEKLY;BYDAY=FR;UNTIL=20260930T235900Z
+END:VEVENT
+BEGIN:VEVENT
 UID:wall-0@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: NO STAGE NO WALLS
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Indie / punk / disco bill. Tickets: thewalllivehouse.kktix.cc
@@ -43,7 +53,7 @@ DTEND;TZID=Asia/Taipei:20260704T203000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-1@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: 肉聲菩薩 (noise / experimental)
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Wall-of-sound noise night — the loud\, leftfield end. Tickets: thewalllivehouse.kktix.cc
@@ -52,7 +62,7 @@ DTEND;TZID=Asia/Taipei:20260705T210000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-2@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: Malpaca 羊駝小姐 — "Now… What?"
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:First headline show. Tickets: thewalllivehouse.kktix.cc
@@ -60,8 +70,17 @@ DTSTART;TZID=Asia/Taipei:20260711T200000
 DTEND;TZID=Asia/Taipei:20260711T213000
 END:VEVENT
 BEGIN:VEVENT
+UID:lsf-145-20260718@taipei-field-notes
+DTSTAMP:20260701T084901Z
+SUMMARY:失聲祭 LSF #145 (experimental / noise)
+LOCATION:No. 10\, Lane 107\, Linsen North Road\, Zhongshan District\, Taipei\, Taiwan
+DESCRIPTION:Eric Wong (DE) · 賴宗昀 L.T.Y. × 楊雨樵 · Betty Apple. Presale NT$450 / door NT$500. Taiwan’s flagship experimental/noise series — and a chance to catch Betty Apple live.
+DTSTART;TZID=Asia/Taipei:20260718T190000
+DTEND;TZID=Asia/Taipei:20260718T213000
+END:VEVENT
+BEGIN:VEVENT
 UID:witchhouse-skipskip-20260724@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:skip skip ben ben @ Witch House
 LOCATION:No. 7\, Lane 56\, Section 3\, Xinsheng South Road\, Da’an District\, Taipei\, Taiwan
 DESCRIPTION:Long-running Taiwanese lo-fi / experimental artist. Official Witch House schedule.
@@ -70,7 +89,7 @@ DTEND;TZID=Asia/Taipei:20260724T220000
 END:VEVENT
 BEGIN:VEVENT
 UID:legacy-youyutong-20260724@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:游宇潼《天才在左 瘋子在右》讚聲演唱會 @ Legacy
 LOCATION:No. 1\, Section 1\, Bade Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Pop/rock headline at Legacy (Huashan 1914\, Bldg 中5A). Showtime approx — verify on Legacy program page.
@@ -79,7 +98,7 @@ DTEND;TZID=Asia/Taipei:20260724T223000
 END:VEVENT
 BEGIN:VEVENT
 UID:pipe-between-20260725@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:雙聲道 BETWEEN @ PIPE
 LOCATION:No. 2\, Shui Yuan Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:upright磊落 / 範例三 / 韓森 — experimental / electronic bill at the water-tank venue.
@@ -88,7 +107,7 @@ DTEND;TZID=Asia/Taipei:20260725T223000
 END:VEVENT
 BEGIN:VEVENT
 UID:witchhouse-goatak-20260725@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:王謙 Goatak @ Witch House
 LOCATION:No. 7\, Lane 56\, Section 3\, Xinsheng South Road\, Da’an District\, Taipei\, Taiwan
 DESCRIPTION:Electronic / experimental producer. Official Witch House schedule.
@@ -97,7 +116,7 @@ DTEND;TZID=Asia/Taipei:20260725T220000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-3@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: 黃澤森 — 陰森童話故事集
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Solo return after three years. Tickets: thewalllivehouse.kktix.cc
@@ -106,7 +125,7 @@ DTEND;TZID=Asia/Taipei:20260726T213000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-4@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: Friko (US) Live in Taipei
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Chicago alt / post-punk — buzzy international booking. Tickets: thewalllivehouse.kktix.cc
@@ -114,8 +133,17 @@ DTSTART;TZID=Asia/Taipei:20260730T200000
 DTEND;TZID=Asia/Taipei:20260730T213000
 END:VEVENT
 BEGIN:VEVENT
+UID:coscup-2026@taipei-field-notes
+DTSTAMP:20260701T084901Z
+SUMMARY:COSCUP 2026 × UbuCon Asia (open source)
+LOCATION:No. 43\, Section 4\, Keelung Road\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:Asia’s largest open-source conference (Aug 8–9)\, 3\,000+ developers\, makers and community leaders. Free\, volunteer-run — strong for meeting the open-hardware crowd.
+DTSTART;VALUE=DATE:20260808
+DTEND;VALUE=DATE:20260809
+END:VEVENT
+BEGIN:VEVENT
 UID:wall-5@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: MILLI — JAA EHH! Asia Tour
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Thai rapper\, Coachella alum. Tickets: thewalllivehouse.kktix.cc
@@ -124,7 +152,7 @@ DTEND;TZID=Asia/Taipei:20260809T203000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-6@taipei-field-notes
-DTSTAMP:20260701T083908Z
+DTSTAMP:20260701T084901Z
 SUMMARY:The Wall: DENGARYU 田我流 (JP hip-hop)
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:stillichimiya-affiliated Japanese hip-hop. Tickets: thewalllivehouse.kktix.cc
