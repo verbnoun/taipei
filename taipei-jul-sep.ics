@@ -16,7 +16,7 @@ END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:revolver-brass-bomb-20260701@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:Brass Bomb Party Vol.3 @ Revolver
 LOCATION:No. 1-2\, Section 1\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:盜魂 Soul Heist + KiKu (CH). Doors 19:30\, show 20:00. NT$500 (+1 drink). Hip-hop / brass band / avant-garde jazz / rock.
@@ -25,7 +25,7 @@ DTEND;TZID=Asia/Taipei:20260701T230000
 END:VEVENT
 BEGIN:VEVENT
 UID:sappho-tripolar-20260702@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:Tri-polar Syndrome 爵症 (improv) @ Sappho
 LOCATION:No. 500\, Linsen North Road\, B1\, Zhongshan District\, Taipei\, Taiwan
 DESCRIPTION:林華勁 / 劉育嘉 / Teemu Mustonen. Improv-leaning jazz trio led by guitarist Lin Hua-chin.
@@ -33,8 +33,17 @@ DTSTART;TZID=Asia/Taipei:20260702T210000
 DTEND;TZID=Asia/Taipei:20260702T230000
 END:VEVENT
 BEGIN:VEVENT
+UID:ai-founders-night-20260703@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:AI Founders Exchange Night 創業小聚#1
+LOCATION:3F\, No. 83-6\, Section 2\, Wuchang Street\, Wanhua District\, Taipei\, Taiwan
+DESCRIPTION:AI-startup founders networking night at CollaPlay coworking/wine-bar. First edition of a new 創業小聚 series. Register on Luma.
+DTSTART;TZID=Asia/Taipei:20260703T183000
+DTEND;TZID=Asia/Taipei:20260703T213000
+END:VEVENT
+BEGIN:VEVENT
 UID:taipei-tech-mixer-fri@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:Taipei Tech Mixer & Social
 LOCATION:No. 65\, Section 1\, Anhe Road\, Da’an District\, Taipei\, Taiwan
 DESCRIPTION:English-friendly weekly after-work Tech/AI/Data mixer. Low-pressure way to meet founders & tech workers. Confirm each week on Eventbrite.
@@ -43,8 +52,26 @@ DTEND;TZID=Asia/Taipei:20260703T220000
 RRULE:FREQ=WEEKLY;BYDAY=FR;UNTIL=20260930T235900Z
 END:VEVENT
 BEGIN:VEVENT
+UID:doublesquare-openings-20260704@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:Opening: Wang Gong-Ze + Yokomizo Miyuki @ Double Square
+LOCATION:No. 30\, Lane 770\, Bei’an Road\, Zhongshan District\, Taipei\, Taiwan
+DESCRIPTION:Joint opening reception for two solos: 王公澤 Whispers of Being / 橫溝美由紀 Landscape—Tracing the Invisible Route (both run to Aug 8). Reception hour unpublished — call 02-8501-2138\; gallery receptions here are typically Saturday afternoon.
+DTSTART;VALUE=DATE:20260704
+DTEND;VALUE=DATE:20260705
+END:VEVENT
+BEGIN:VEVENT
+UID:testproject3-20260704@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:Test Project #3 — TW×JP modular synth + VJ live
+LOCATION:No. 23\, Lane 100\, Section 1\, Longmi Road\, Bali District\, New Taipei City\, Taiwan
+DESCRIPTION:Cross-national modular-synth afternoon: 5 Japan + 5 Taiwan artists (Syncsick\, Gray Fover\, Paterson\, Su-Ning\, Dei Chi) with synced VJ visuals. NT$800 presale / 900 door. Scene-networking gold for a hardware builder. Last entry 17:30.
+DTSTART;TZID=Asia/Taipei:20260704T140000
+DTEND;TZID=Asia/Taipei:20260704T180000
+END:VEVENT
+BEGIN:VEVENT
 UID:wall-0@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: NO STAGE NO WALLS
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Indie / punk / disco bill. Tickets: thewalllivehouse.kktix.cc
@@ -52,8 +79,17 @@ DTSTART;TZID=Asia/Taipei:20260704T190000
 DTEND;TZID=Asia/Taipei:20260704T203000
 END:VEVENT
 BEGIN:VEVENT
+UID:ircam-showcase-20260704@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:IRCAM Workshop Showcase @ C-LAB (free — register by Jul 3 noon)
+LOCATION:No. 177\, Section 1\, Jianguo South Road\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:10 creators present electroacoustic works from the C-LAB × IRCAM computer-music workshop (theme: AI algorithm Dicy2) in the 49.4-channel immersive theater + discussion. Free but ticket required — register at accupass.com/go/ircamworkshop2026 BEFORE Jul 3 12:00. Also the way to scout next year’s open call.
+DTSTART;TZID=Asia/Taipei:20260704T190000
+DTEND;TZID=Asia/Taipei:20260704T213000
+END:VEVENT
+BEGIN:VEVENT
 UID:wall-1@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: 肉聲菩薩 (noise / experimental)
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Wall-of-sound noise night — the loud\, leftfield end. Tickets: thewalllivehouse.kktix.cc
@@ -62,7 +98,7 @@ DTEND;TZID=Asia/Taipei:20260705T210000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-2@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: Malpaca 羊駝小姐 — "Now… What?"
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:First headline show. Tickets: thewalllivehouse.kktix.cc
@@ -70,8 +106,26 @@ DTSTART;TZID=Asia/Taipei:20260711T200000
 DTEND;TZID=Asia/Taipei:20260711T213000
 END:VEVENT
 BEGIN:VEVENT
+UID:tenderfoot-eurorack-20260718@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:MODULAR SYNTHESIS — Tenderfoot Electronics × Peter Young
+LOCATION:No. 28\, Section 2\, Daguan Road\, Banqiao District\, New Taipei City\, Taiwan
+DESCRIPTION:Lecture + live demo by Peter Young\, founder of Taiwan Eurorack maker Tenderfoot Electronics: module design\, instrument development\, hands-on sound creation. At NTUA’s sound-art/acoustics research center. Register via Accupass (show app ticket). Same day as LSF #145 (evening) — great double bill.
+DTSTART;TZID=Asia/Taipei:20260718T140000
+DTEND;TZID=Asia/Taipei:20260718T160000
+END:VEVENT
+BEGIN:VEVENT
+UID:vtaiwan-4-20260718@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:v-taiwan Meetup #4 (civic tech)
+LOCATION:5F\, No. 9\, Section 3\, Nanjing East Road\, Zhongshan District\, Taipei\, Taiwan
+DESCRIPTION:vTaiwan civic-tech community meetup. Note: overlaps the Tenderfoot Eurorack workshop (also 14:00 Jul 18) — pick one\; LSF #145 is that evening.
+DTSTART;TZID=Asia/Taipei:20260718T140000
+DTEND;TZID=Asia/Taipei:20260718T170000
+END:VEVENT
+BEGIN:VEVENT
 UID:lsf-145-20260718@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:失聲祭 LSF #145 (experimental / noise)
 LOCATION:No. 10\, Lane 107\, Linsen North Road\, Zhongshan District\, Taipei\, Taiwan
 DESCRIPTION:Eric Wong (DE) · 賴宗昀 L.T.Y. × 楊雨樵 · Betty Apple. Presale NT$450 / door NT$500. Taiwan’s flagship experimental/noise series — and a chance to catch Betty Apple live.
@@ -79,8 +133,17 @@ DTSTART;TZID=Asia/Taipei:20260718T190000
 DTEND;TZID=Asia/Taipei:20260718T213000
 END:VEVENT
 BEGIN:VEVENT
+UID:code-for-taiwan-20260722@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:Code for Taiwan 七月小聚 — Vibe Coding vs AI Coding
+LOCATION:Zhongzheng (venue sent to registered guests)
+DESCRIPTION:Talk + community night on AI coding practice (SDD\, harness concepts). Venue revealed on registration (near Taipei Main). Waitlist active — register on Luma.
+DTSTART;TZID=Asia/Taipei:20260722T190000
+DTEND;TZID=Asia/Taipei:20260722T210000
+END:VEVENT
+BEGIN:VEVENT
 UID:witchhouse-skipskip-20260724@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:skip skip ben ben @ Witch House
 LOCATION:No. 7\, Lane 56\, Section 3\, Xinsheng South Road\, Da’an District\, Taipei\, Taiwan
 DESCRIPTION:Long-running Taiwanese lo-fi / experimental artist. Official Witch House schedule.
@@ -89,7 +152,7 @@ DTEND;TZID=Asia/Taipei:20260724T220000
 END:VEVENT
 BEGIN:VEVENT
 UID:legacy-youyutong-20260724@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:游宇潼《天才在左 瘋子在右》讚聲演唱會 @ Legacy
 LOCATION:No. 1\, Section 1\, Bade Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Pop/rock headline at Legacy (Huashan 1914\, Bldg 中5A). Showtime approx — verify on Legacy program page.
@@ -98,7 +161,7 @@ DTEND;TZID=Asia/Taipei:20260724T223000
 END:VEVENT
 BEGIN:VEVENT
 UID:pipe-between-20260725@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:雙聲道 BETWEEN @ PIPE
 LOCATION:No. 2\, Shui Yuan Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:upright磊落 / 範例三 / 韓森 — experimental / electronic bill at the water-tank venue.
@@ -107,7 +170,7 @@ DTEND;TZID=Asia/Taipei:20260725T223000
 END:VEVENT
 BEGIN:VEVENT
 UID:witchhouse-goatak-20260725@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:王謙 Goatak @ Witch House
 LOCATION:No. 7\, Lane 56\, Section 3\, Xinsheng South Road\, Da’an District\, Taipei\, Taiwan
 DESCRIPTION:Electronic / experimental producer. Official Witch House schedule.
@@ -116,7 +179,7 @@ DTEND;TZID=Asia/Taipei:20260725T220000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-3@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: 黃澤森 — 陰森童話故事集
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Solo return after three years. Tickets: thewalllivehouse.kktix.cc
@@ -125,7 +188,7 @@ DTEND;TZID=Asia/Taipei:20260726T213000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-4@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: Friko (US) Live in Taipei
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Chicago alt / post-punk — buzzy international booking. Tickets: thewalllivehouse.kktix.cc
@@ -133,8 +196,17 @@ DTSTART;TZID=Asia/Taipei:20260730T200000
 DTEND;TZID=Asia/Taipei:20260730T213000
 END:VEVENT
 BEGIN:VEVENT
+UID:sound-unveiled-20260801@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:Sound Unveiled 聲響解密 — lecture-concert (contemporary music)
+LOCATION:No. 16\, Lane 23\, Rui’an Street\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:Part of a 5-lecture-concert series on how sound is made — extended techniques\, minimalism\, avant-garde (Reich\, Lachenmann\, Stockhausen). Other dates: Jul 11/18\, Sep 5.
+DTSTART;TZID=Asia/Taipei:20260801T143000
+DTEND;TZID=Asia/Taipei:20260801T163000
+END:VEVENT
+BEGIN:VEVENT
 UID:coscup-2026@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:COSCUP 2026 × UbuCon Asia (open source)
 LOCATION:No. 43\, Section 4\, Keelung Road\, Da’an District\, Taipei\, Taiwan
 DESCRIPTION:Asia’s largest open-source conference (Aug 8–9)\, 3\,000+ developers\, makers and community leaders. Free\, volunteer-run — strong for meeting the open-hardware crowd.
@@ -143,7 +215,7 @@ DTEND;VALUE=DATE:20260809
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-5@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: MILLI — JAA EHH! Asia Tour
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:Thai rapper\, Coachella alum. Tickets: thewalllivehouse.kktix.cc
@@ -152,11 +224,20 @@ DTEND;TZID=Asia/Taipei:20260809T203000
 END:VEVENT
 BEGIN:VEVENT
 UID:wall-6@taipei-field-notes
-DTSTAMP:20260702T030802Z
+DTSTAMP:20260702T031758Z
 SUMMARY:The Wall: DENGARYU 田我流 (JP hip-hop)
 LOCATION:No. 200\, Section 4\, Roosevelt Road\, Zhongzheng District\, Taipei\, Taiwan
 DESCRIPTION:stillichimiya-affiliated Japanese hip-hop. Tickets: thewalllivehouse.kktix.cc
 DTSTART;TZID=Asia/Taipei:20260815T200000
 DTEND;TZID=Asia/Taipei:20260815T213000
+END:VEVENT
+BEGIN:VEVENT
+UID:sound-unveiled-20260905@taipei-field-notes
+DTSTAMP:20260702T031758Z
+SUMMARY:Sound Unveiled 聲響解密 — lecture-concert (contemporary music)
+LOCATION:No. 16\, Lane 23\, Rui’an Street\, Da’an District\, Taipei\, Taiwan
+DESCRIPTION:Part of a 5-lecture-concert series on how sound is made — extended techniques\, minimalism\, avant-garde. Final in-window session.
+DTSTART;TZID=Asia/Taipei:20260905T143000
+DTEND;TZID=Asia/Taipei:20260905T163000
 END:VEVENT
 END:VCALENDAR
