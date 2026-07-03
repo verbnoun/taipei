@@ -34,7 +34,7 @@ const eventsRaw = db.prepare(`
   SELECT id, title, location AS loc, location_apple AS loc_apple,
          date, start_time AS start, end_time AS end,
          all_day AS allDay, rrule, cadence_label AS cadenceLabel,
-         category AS cat, description AS desc, status, url
+         category AS cat, description AS desc, status, url, spot_id AS sid
   FROM events WHERE published = 1 ORDER BY date, start_time
 `).all();
 
