@@ -187,10 +187,10 @@
           </div>
           <button type="button" onClick="{{ closeIcs }}" style="flex:none;width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);cursor:pointer;font-size:14px;line-height:1">×</button>
         </div>
-        <div style="flex:1;min-height:0;overflow:auto;padding:14px 20px 24px">
+        <div ref="{{ icsScrollRef }}" style="flex:1;min-height:0;overflow:auto;padding:14px 20px 24px">
           <sc-for list="{{ agendaDays }}" as="day" hint-placeholder-count="4">
-            <div style="margin-bottom:14px">
-              <div style="font:600 12.5px/1 'IBM Plex Mono',monospace;letter-spacing:.06em;color:var(--text2);padding:6px 0">{{ day.label }}</div>
+            <div id="{{ day.key }}" style="margin-bottom:14px">
+              <div style="{{ day.labelStyle }}">{{ day.label }}</div>
               <sc-for list="{{ day.events }}" as="ev" hint-placeholder-count="2">
                 <button type="button" data-sid="{{ ev.sid }}" onClick="{{ selectEventVenue }}" style="{{ ev.rowStyle }}">
                   <span style="flex:none;width:4px;border-radius:2px;background:{{ ev.color }};align-self:stretch"></span>
@@ -316,8 +316,9 @@ class Component extends DCLogic {
     });
   }
   componentDidUpdate(prevProps,prevState){
-    if(!this.map) return;
     prevProps=prevProps||{}; prevState=prevState||{};
+    if(!prevState.showIcs && this.state.showIcs) setTimeout(()=>this._scrollAgendaToToday(),60);
+    if(!this.map) return;
     if(prevProps.mapTheme!==this.props.mapTheme && this._tiles) this._tiles.setUrl(this._tileUrl());
     if(prevState.selectedId!==this.state.selectedId){ this._highlight(); if(this.state.selectedId) setTimeout(()=>this._scrollToCard(this.state.selectedId),60); }
     if(prevState.visible!==this.state.visible) this._applyVisibility();
@@ -352,6 +353,9 @@ class Component extends DCLogic {
   openIcs=()=>{ this.setState({showIcs:true}); };
   closeIcs=()=>{ this.setState({showIcs:false}); };
   stopProp=(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); };
+  icsScrollRef=(el)=>{ this.icsScrollEl=el; };
+  _scrollAgendaToToday(){ var sc=this.icsScrollEl; if(!sc||!this._agFirst) return; var el=document.getElementById(this._agFirst); if(!el) return;
+    var er=el.getBoundingClientRect(), sr=sc.getBoundingClientRect(); sc.scrollTop += (er.top - sr.top) - 4; }
   selectEventVenue=(e)=>{ var sid=e.currentTarget.dataset.sid; if(!sid) return; var it=this._byId(sid); if(!it) return;
     this.setState({showIcs:false});
     this._select(sid, it.cat||'nei');
@@ -416,6 +420,8 @@ class Component extends DCLogic {
   _buildAgenda(){
     var self=this;
     var seed=this._seedEvents();
+    var _n=new Date(); var _pp=function(n){return ('0'+n).slice(-2);};
+    var todayStr=_n.getFullYear()+'-'+_pp(_n.getMonth()+1)+'-'+_pp(_n.getDate());
     var occ=[];
     seed.forEach(function(e){
       if(e.rrule){ self._expandRrule(e).forEach(function(dt){ occ.push({src:e, date:dt, repeats:true}); }); }
@@ -431,10 +437,15 @@ class Component extends DCLogic {
       var loc=e.loc||'';
       if(o.repeats) loc=(loc?loc+'  ·  ':'')+'↻ weekly';
       var hasSpot=!!(e.sid && self.SPOTS.some(function(s){return s.id===e.sid;}));
+      var isPast=o.date<todayStr;
       byDay[o.date].push({ title:e.title, loc:loc, hasLoc:!!loc, timeLabel:(e.allDay||!e.start)?'All day':self._fmtTime(e.start), color:c, catLabel:catLabel,
-        sid:hasSpot?e.sid:'', rowStyle:'display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--border);width:100%;text-align:left;background:none;border-left:0;border-right:0;border-bottom:0;color:var(--text);font-family:inherit;cursor:'+(hasSpot?'pointer':'default') });
+        sid:hasSpot?e.sid:'', rowStyle:'display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--border);width:100%;text-align:left;background:none;border-left:0;border-right:0;border-bottom:0;color:var(--text);font-family:inherit;cursor:'+(hasSpot?'pointer':'default')+(isPast?';opacity:.4':'') });
     });
-    var agendaDays=order.map(function(dt){ return {label:self._fmtDay(dt), events:byDay[dt]}; });
+    var agendaDays=order.map(function(dt){ var past=dt<todayStr;
+      return {label:self._fmtDay(dt), key:'agday-'+dt, events:byDay[dt],
+        labelStyle:"font:600 12.5px/1 'IBM Plex Mono',monospace;letter-spacing:.06em;padding:6px 0;color:"+(past?'var(--mutedDim)':'var(--text2)')}; });
+    var firstCur=order.filter(function(dt){return dt>=todayStr;})[0];
+    this._agFirst=firstCur?('agday-'+firstCur):null;
     var strip=function(s){ return s.replace(/^[A-Za-z]+, /,''); };
     var rangeLabel=order.length?(strip(self._fmtDay(order[0]))+' – '+strip(self._fmtDay(order[order.length-1]))):'';
     return {agendaDays:agendaDays, totalDated:occ.length, rangeLabel:rangeLabel};
@@ -509,7 +520,7 @@ class Component extends DCLogic {
       activeLabel:labelOf[at]||(this.CAT[at]||{}).label||'', activeCount:items.length, activeIntro:(this.CAT[at]||{}).intro||'',
       isEmpty:items.length===0, activeList:items,
       selectCard:this.selectCard, setRating:this.setRating, deleteById:this.deleteById, downloadICS:this.downloadICS,
-      showIcs:this.state.showIcs, openIcs:this.openIcs, closeIcs:this.closeIcs, stopProp:this.stopProp, selectEventVenue:this.selectEventVenue,
+      showIcs:this.state.showIcs, openIcs:this.openIcs, closeIcs:this.closeIcs, stopProp:this.stopProp, selectEventVenue:this.selectEventVenue, icsScrollRef:this.icsScrollRef,
       icsEventCount:agenda.totalDated, rangeLabel:agenda.rangeLabel, agendaDays:agenda.agendaDays
     };
   }
